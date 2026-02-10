@@ -1,6 +1,10 @@
 //-------------------------------------------------------
 //P9 Sonic Harpoon Artillery Remote Projectile(SHARP) Rifle
 
+#define SHARP_DANGER_MODE "DANGER"
+#define SHARP_DIRECTED_MODE "DIRECTED"
+#define SHARP_SAFE_MODE "SAFE"
+
 /obj/item/weapon/gun/rifle/sharp
 	name = "\improper P9 SHARP rifle"
 	desc = "An experimental harpoon launcher rifle with an inbuilt magnetic harness manufactured by Armat Systems. It's specialized for specific ammo types out of a 10-round magazine, best used for area denial and disruption."
@@ -25,7 +29,7 @@
 	flags_item = TWOHANDED|NO_CRYO_STORE
 	map_specific_decoration = TRUE
 
-	var/explosion_delay_sharp = TRUE
+	var/current_mine_mode = SHARP_DANGER_MODE
 
 /obj/item/weapon/gun/rifle/sharp/Initialize()
 	. = ..()
@@ -33,7 +37,7 @@
 
 /obj/item/weapon/gun/rifle/sharp/get_examine_text(mob/user)
 	. = ..()
-	. += SPAN_INFO("Switching firemodes will toggle the explosion delay timer between 1 second and 5 seconds.")
+	. += SPAN_INFO("Switching firemodes will toggle the mode of operation of fired mines. DANGER mode sets mines with no blast dampening. DIRECTED mode sets mines with greater blast dampening. SAFE mode ensures greater IFF; mines will NEVER detonate when allies are nearby.")
 
 /obj/item/weapon/gun/rifle/sharp/set_bullet_traits()
 	LAZYADD(traits_to_give, list(
@@ -51,7 +55,6 @@
 	scatter = SCATTER_AMOUNT_NONE
 	damage_mult = BASE_BULLET_DAMAGE_MULT
 	recoil = RECOIL_OFF
-
 
 /obj/item/weapon/gun/rifle/sharp/unload_chamber(mob/user)
 	if(!in_chamber)
@@ -78,10 +81,20 @@
 
 /obj/item/weapon/gun/rifle/sharp/do_toggle_firemode(mob/user)
 	. = ..()
-	explosion_delay_sharp = !explosion_delay_sharp
 	playsound(user, 'sound/weapons/handling/gun_burst_toggle.ogg', 15, 1)
-	to_chat(user, SPAN_NOTICE("[icon2html(src, user)] You [explosion_delay_sharp ? SPAN_BOLD("enable") : SPAN_BOLD("disable")] [src]'s delayed fire mode. Explosive ammo will blow up in [explosion_delay_sharp ? SPAN_BOLD("5 seconds") : SPAN_BOLD("2.5 seconds")]."))
-	user.balloon_alert(user, "explosion delay [explosion_delay_sharp ? "5 seconds" : "2.5 seconds"].")
+	var/mine_mode_notice = "[icon2html(src, user)] You set [src]'s mine mode to [current_mine_mode]."
+	switch (current_mine_mode)
+		if (SHARP_DANGER_MODE)
+			current_mine_mode = SHARP_DIRECTED_MODE
+			mine_mode_notice += " Explosive ammo will blow up without blast dampening."
+		if (SHARP_DIRECTED_MODE)
+			current_mine_mode = SHARP_SAFE_MODE
+			mine_mode_notice += " Explosive ammo will blow up with greater blast dampening."
+		if (SHARP_SAFE_MODE)
+			current_mine_mode = SHARP_DANGER_MODE
+			mine_mode_notice += " Explosive ammo without blast dampening will under no circumstance blow up near IFF targets."
+	user.balloon_alert(user, "[current_mine_mode] mode activated.")
+	to_chat(user, SPAN_NOTICE(mine_mode_notice))
 
 
 
@@ -144,10 +157,8 @@
 		if(!target.get_target_lock(shooter.faction_group))
 			var/obj/item/weapon/gun/rifle/sharp/weapon = shot_dart.shot_from
 			playsound(get_turf(target), 'sound/weapons/gun_sharp_explode.ogg', 100)
-			if(weapon && weapon.explosion_delay_sharp)
+			if(weapon)
 				addtimer(CALLBACK(src, PROC_REF(delayed_explosion), shot_dart, target, shooter), 5 SECONDS)
-			else
-				addtimer(CALLBACK(src, PROC_REF(delayed_explosion), shot_dart, target, shooter), 2.5 SECONDS)
 
 /datum/ammo/rifle/sharp/explosive/drop_dart(loc, obj/projectile/shot_dart, mob/shooter)
 	var/signal_explosion = FALSE
@@ -164,10 +175,26 @@
 
 /datum/ammo/rifle/sharp/explosive/proc/delayed_explosion(obj/projectile/shot_dart, mob/target, mob/shooter)
 	if(ismob(target))
-		var/explosion_size = 60
+		var/explosion_strength = 60
 		var/falloff_size = 35
 		var/cause_data = create_cause_data("P9 SHARP Rifle", shooter)
-		cell_explosion(get_turf(target), explosion_size, falloff_size, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
+
+		var/obj/item/weapon/gun/rifle/sharp/gun = shot_dart.shot_from
+		var/mine_mode = gun.current_mine_mode
+
+		switch(mine_mode)
+			if(SHARP_DIRECTED_MODE)
+				explosion_strength = 120
+				falloff_size = 120
+			if(SHARP_SAFE_MODE)
+				for(var/mob/living/carbon/human in range(explosion_strength / falloff_size, target))
+					if (human.get_target_lock(shooter.faction_group))
+						playsound(target, 'sound/weapons/smartgun_fail.ogg', src, 25)
+						to_chat(target, SPAN_WARNING("[shot_dart] releases itself from you!"))
+						target.balloon_alert(target, "an attached explosive dart releases itself from you!", text_color = "#ce1e1e")
+						to_chat(shooter, SPAN_WARNING("[shot_dart] recognized an IFF marked target and did not detonate!"))
+						return
+		cell_explosion(get_turf(target), explosion_strength, falloff_size, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 
 
 /datum/ammo/rifle/sharp/incendiary
@@ -186,10 +213,8 @@
 		if(!target.get_target_lock(shooter.faction_group))
 			var/obj/item/weapon/gun/rifle/sharp/weapon = shot_dart.shot_from
 			playsound(get_turf(target), 'sound/weapons/gun_sharp_explode.ogg', 100)
-			if(weapon && weapon.explosion_delay_sharp)
+			if(weapon)
 				addtimer(CALLBACK(src, PROC_REF(delayed_fire), shot_dart, target, shooter), 5 SECONDS)
-			else
-				addtimer(CALLBACK(src, PROC_REF(delayed_fire), shot_dart, target, shooter), 2.5 SECONDS)
 
 /datum/ammo/rifle/sharp/incendiary/drop_dart(loc, obj/projectile/shot_dart, mob/shooter)
 	var/signal_explosion = FALSE
@@ -208,6 +233,21 @@
 	if(ismob(target))
 		var/datum/effect_system/smoke_spread/phosphorus/smoke = new /datum/effect_system/smoke_spread/phosphorus/sharp
 		var/smoke_radius = 2
+
+		var/obj/item/weapon/gun/rifle/sharp/gun = shot_dart.shot_from
+		var/mine_mode = gun.current_mine_mode
+
+		switch(mine_mode)
+			if(SHARP_DIRECTED_MODE)
+				smoke_radius = 1
+			if(SHARP_SAFE_MODE)
+				for(var/mob/living/carbon/human in range(smoke_radius + 1, target))
+					if (human.get_target_lock(shooter.faction_group))
+						playsound(target, 'sound/weapons/smartgun_fail.ogg', src, 25)
+						to_chat(target, SPAN_WARNING("[shot_dart] releases itself from you!"))
+						target.balloon_alert(target, "an attached incendiary dart releases itself from you!", text_color = "#ce7c1e")
+						to_chat(shooter, SPAN_WARNING("[shot_dart] recognized an IFF marked target and did not detonate!"))
+						return
 		smoke.set_up(smoke_radius, 0, get_turf(target))
 		smoke.start()
 
