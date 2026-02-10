@@ -486,7 +486,7 @@
 		if(SHARP_DIRECTED_MODE)
 			explosion_falloff = explosion_strength
 		if(SHARP_SAFE_MODE)
-			for(var/mob/living/carbon/human in range((explosion_strength / explosion_falloff), src))
+			for(var/mob/living/carbon/human in range((explosion_strength / explosion_falloff) - 1, src))
 				if (human.get_target_lock(iff_signal))
 					disarm()
 					// to_chat(user, SPAN_WARNING("[src] recognized an IFF marked target and did not detonate!"))
@@ -596,7 +596,7 @@
 			smoke_radius = 0
 			flame_radius = 0
 		if (SHARP_SAFE_MODE)
-			for(var/mob/living/carbon/human in range(flame_radius + 1, src))
+			for(var/mob/living/carbon/human in range(flame_radius, src))
 				if (human.get_target_lock(iff_signal))
 					disarm()
 					// to_chat(user, SPAN_WARNING("[src] recognized an IFF marked target and did not detonate!"))

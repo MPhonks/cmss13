@@ -242,7 +242,7 @@
 				new /obj/flamer_fire(get_turf(target), WEAKREF(shooter), reagent, flame_radius)
 				return
 			if(SHARP_SAFE_MODE)
-				for(var/mob/living/carbon/human in range(smoke_radius + 1, target))
+				for(var/mob/living/carbon/human in range(smoke_radius, target))
 					if (human.get_target_lock(shooter.faction_group))
 						playsound(target, 'sound/weapons/smartgun_fail.ogg', target, 25)
 						to_chat(target, SPAN_WARNING("[shot_dart] releases itself from you!"))
