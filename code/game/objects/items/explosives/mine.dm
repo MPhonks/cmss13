@@ -517,6 +517,7 @@
 	icon_state = rearm_icon_state
 	desc = rearm_desc
 	disarmed = FALSE
+	addtimer(PROC_REF(disarm), 5 MINUTES, TIMER_DELETE_ME)
 	deploy_mine(user)
 
 /obj/item/explosive/mine/sharp/attack_self(mob/living/user)
