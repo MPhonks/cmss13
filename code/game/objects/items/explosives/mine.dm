@@ -404,8 +404,6 @@
 	var/mine_state = ""
 	var/mine_mode = ""
 	var/timer_id
-	var/last_deploying_user = null
-	var/rearm_icon_state
 	var/rearm_desc
 
 /obj/item/explosive/mine/sharp/proc/upgrade_mine()
@@ -447,7 +445,7 @@
 				user.visible_message(SPAN_WARNING("[user] stops rearming [src]."), \
 				SPAN_WARNING("You stop rearming [src]."))
 				return
-			if(!active)//someone beat us to it
+			if(active)//someone beat us to it
 				return
 			user.visible_message(SPAN_NOTICE("[user] finishes rearming [src]."), \
 			SPAN_NOTICE("You finish rearming [src]."))
@@ -490,7 +488,6 @@
 		if(SHARP_SAFE_MODE)
 			for(var/mob/living/carbon/human in range((explosion_strength / explosion_falloff) + 1, src))
 				if (human.get_target_lock(iff_signal))
-					playsound(src, 'sound/weapons/smartgun_fail.ogg', src, 25)
 					disarm()
 					// to_chat(user, SPAN_WARNING("[src] recognized an IFF marked target and did not detonate!"))
 					return
@@ -502,24 +499,20 @@
 	anchored = FALSE
 	active = FALSE
 	triggered = FALSE
-	rearm_icon_state = icon_state
 	icon_state = "sharp_mine_disarmed"
 	rearm_desc = desc
 	desc = "A disarmed P9 SHARP rifle dart. With the right training, it can potentially be rearmed with a security access tuner."
 	QDEL_NULL(tripwire)
 	disarmed = TRUE
 	deltimer(timer_id)
+	playsound(src, 'sound/weapons/smartgun_fail.ogg', src, 25)
 
 /obj/item/explosive/mine/sharp/proc/rearm(mob/user)
-	mine_level = 1
-	icon_state = rearm_icon_state
-	desc = rearm_desc
-	addtimer(PROC_REF(disarm), 5 MINUTES, TIMER_DELETE_ME)
-	deploy_mine(user)
-	anchored = TRUE
-	active = TRUE
-	triggered = TRUE
 	disarmed = FALSE
+	mine_level = 1
+	desc = rearm_desc
+	addtimer(CALLBACK(src, PROC_REF(disarm)), 5 MINUTES, TIMER_DELETE_ME)
+	deploy_mine(user)
 
 /obj/item/explosive/mine/sharp/attack_self(mob/living/user)
 	if(disarmed)
@@ -533,7 +526,7 @@
 		iff_signal = user.faction
 
 	cause_data = create_cause_data(initial(name), user, src)
-	if(user)
+	if(user && user.get_held_item() == src)
 		user.drop_inv_item_on_ground(src)
 	setDir(user ? user.dir : dir) //The direction it is planted in is the direction the user faces at that time
 	activate_sensors()
@@ -611,7 +604,6 @@
 		if (SHARP_SAFE_MODE)
 			for(var/mob/living/carbon/human in range(flame_radius + 1, src))
 				if (human.get_target_lock(iff_signal))
-					playsound(src, 'sound/weapons/smartgun_fail.ogg', src, 25)
 					disarm()
 					// to_chat(user, SPAN_WARNING("[src] recognized an IFF marked target and did not detonate!"))
 					return
