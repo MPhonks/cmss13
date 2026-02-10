@@ -1,10 +1,6 @@
 //-------------------------------------------------------
 //P9 Sonic Harpoon Artillery Remote Projectile(SHARP) Rifle
 
-#define SHARP_DANGER_MODE "DANGER"
-#define SHARP_DIRECTED_MODE "DIRECTED"
-#define SHARP_SAFE_MODE "SAFE"
-
 /obj/item/weapon/gun/rifle/sharp
 	name = "\improper P9 SHARP rifle"
 	desc = "An experimental harpoon launcher rifle with an inbuilt magnetic harness manufactured by Armat Systems. It's specialized for specific ammo types out of a 10-round magazine, best used for area denial and disruption."
@@ -167,33 +163,36 @@
 	if(locate(/obj/item/explosive/mine) in get_turf(loc))
 		signal_explosion = TRUE
 	var/obj/item/explosive/mine/sharp/dart = new /obj/item/explosive/mine/sharp(loc)
+	var/obj/item/weapon/gun/rifle/sharp/weapon = shot_dart.shot_from
+	if(weapon)
+		dart.set_mine_mode(weapon.current_mine_mode)
 	// if no darts on tile, don't arm, explode instead.
 	if(signal_explosion)
 		INVOKE_ASYNC(dart, TYPE_PROC_REF(/obj/item/explosive/mine/sharp, prime), shooter)
 	else
 		dart.anchored = TRUE
-		addtimer(CALLBACK(dart, TYPE_PROC_REF(/obj/item/explosive/mine/sharp, deploy_mine), shooter), 3 SECONDS, TIMER_DELETE_ME)
+		addtimer(CALLBACK(dart, TYPE_PROC_REF(/obj/item/explosive/mine/sharp, deploy_mine), shooter, weapon), 3 SECONDS, TIMER_DELETE_ME)
 		addtimer(CALLBACK(dart, TYPE_PROC_REF(/obj/item/explosive/mine/sharp, disarm)), 5 MINUTES, TIMER_DELETE_ME)
 
 /datum/ammo/rifle/sharp/explosive/proc/delayed_explosion(obj/projectile/shot_dart, mob/target, mob/shooter)
 	if(ismob(target))
 		var/explosion_strength = 60
-		var/falloff_size = 35
+		var/explosion_falloff = 35
 		var/cause_data = create_cause_data("P9 SHARP Rifle", shooter)
 
 		switch(mine_mode)
 			if(SHARP_DIRECTED_MODE)
 				explosion_strength = 90
-				falloff_size = 90
+				explosion_falloff = 90
 			if(SHARP_SAFE_MODE)
-				for(var/mob/living/carbon/human in range((explosion_strength / falloff_size) + 1, target))
+				for(var/mob/living/carbon/human in range((explosion_strength / explosion_falloff) + 1, target))
 					if (human.get_target_lock(shooter.faction_group))
 						playsound(target, 'sound/weapons/smartgun_fail.ogg', src, 25)
 						to_chat(target, SPAN_WARNING("[shot_dart] releases itself from you!"))
 						target.balloon_alert(target, "an attached explosive dart releases itself from you!", text_color = "#ce1e1e")
 						to_chat(shooter, SPAN_WARNING("[shot_dart] recognized an IFF marked target and did not detonate!"))
 						return
-		cell_explosion(get_turf(target), explosion_strength, falloff_size, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
+		cell_explosion(get_turf(target), explosion_strength, explosion_falloff, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
 
 
 /datum/ammo/rifle/sharp/incendiary
@@ -221,6 +220,9 @@
 	if(locate(/obj/item/explosive/mine) in get_turf(loc))
 		signal_explosion = TRUE
 	var/obj/item/explosive/mine/sharp/incendiary/dart = new /obj/item/explosive/mine/sharp/incendiary(loc)
+	var/obj/item/weapon/gun/rifle/sharp/weapon = shot_dart.shot_from
+	if(weapon)
+		dart.set_mine_mode(weapon.current_mine_mode)
 	// if no darts on tile, don't arm, explode instead.
 	if(signal_explosion)
 		INVOKE_ASYNC(dart, TYPE_PROC_REF(/obj/item/explosive/mine/sharp/incendiary, prime), shooter)
@@ -233,10 +235,11 @@
 	if(ismob(target))
 		var/datum/effect_system/smoke_spread/phosphorus/smoke = new /datum/effect_system/smoke_spread/phosphorus/sharp
 		var/smoke_radius = 2
-
 		switch(mine_mode)
 			if(SHARP_DIRECTED_MODE)
-				smoke_radius = 0
+				var/datum/reagent/napalm/green/reagent = new()
+				var/flame_radius = 1
+				new /obj/flamer_fire(get_turf(target), WEAKREF(shooter), reagent, flame_radius)
 			if(SHARP_SAFE_MODE)
 				for(var/mob/living/carbon/human in range(smoke_radius + 1, target))
 					if (human.get_target_lock(shooter.faction_group))
