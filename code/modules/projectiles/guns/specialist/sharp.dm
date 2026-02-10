@@ -37,7 +37,7 @@
 
 /obj/item/weapon/gun/rifle/sharp/get_examine_text(mob/user)
 	. = ..()
-	. += SPAN_INFO("Switching firemodes will toggle the mode of operation of fired mines. DANGER mode sets mines with no blast dampening. DIRECTED mode sets mines with greater blast dampening. SAFE mode ensures greater IFF; mines will NEVER detonate when allies are nearby.")
+	. += SPAN_INFO("Switching firemodes will toggle the mode of operation of fired mines. DANGER mode sets mines with regular functionality. DIRECTED mode sets mines with concentrated intensity. SAFE mode sets mines with greater IFF which NEVER detonate when allies are nearby.")
 
 /obj/item/weapon/gun/rifle/sharp/set_bullet_traits()
 	LAZYADD(traits_to_give, list(
@@ -82,17 +82,17 @@
 /obj/item/weapon/gun/rifle/sharp/do_toggle_firemode(mob/user)
 	. = ..()
 	playsound(user, 'sound/weapons/handling/gun_burst_toggle.ogg', 15, 1)
-	var/mine_mode_notice = "[icon2html(src, user)] You set [src]'s mine mode to [current_mine_mode]."
+	var/mine_mode_notice = ""
 	switch (current_mine_mode)
 		if (SHARP_DANGER_MODE)
 			current_mine_mode = SHARP_DIRECTED_MODE
-			mine_mode_notice += " Explosive ammo will blow up without blast dampening."
+			mine_mode_notice += "[icon2html(src, user)] You set [src]'s mine mode to [current_mine_mode]. Explosive ammo will blow up regularly."
 		if (SHARP_DIRECTED_MODE)
 			current_mine_mode = SHARP_SAFE_MODE
-			mine_mode_notice += " Explosive ammo will blow up with greater blast dampening."
+			mine_mode_notice += "[icon2html(src, user)] You set [src]'s mine mode to [current_mine_mode]. Explosive ammo will concentrate the explosion on the target."
 		if (SHARP_SAFE_MODE)
 			current_mine_mode = SHARP_DANGER_MODE
-			mine_mode_notice += " Explosive ammo without blast dampening will under no circumstance blow up near IFF targets."
+			mine_mode_notice += "[icon2html(src, user)] You set [src]'s mine mode to [current_mine_mode]. Explosive ammo will not blow up near detected IFF targets."
 	user.balloon_alert(user, "[current_mine_mode] mode activated.")
 	to_chat(user, SPAN_NOTICE(mine_mode_notice))
 
@@ -183,10 +183,10 @@
 
 		switch(mine_mode)
 			if(SHARP_DIRECTED_MODE)
-				explosion_strength = 120
-				falloff_size = 120
+				explosion_strength = 90
+				falloff_size = 90
 			if(SHARP_SAFE_MODE)
-				for(var/mob/living/carbon/human in range(explosion_strength / falloff_size, target))
+				for(var/mob/living/carbon/human in range((explosion_strength / falloff_size) + 1, target))
 					if (human.get_target_lock(shooter.faction_group))
 						playsound(target, 'sound/weapons/smartgun_fail.ogg', src, 25)
 						to_chat(target, SPAN_WARNING("[shot_dart] releases itself from you!"))
@@ -236,7 +236,7 @@
 
 		switch(mine_mode)
 			if(SHARP_DIRECTED_MODE)
-				smoke_radius = 1
+				smoke_radius = 0
 			if(SHARP_SAFE_MODE)
 				for(var/mob/living/carbon/human in range(smoke_radius + 1, target))
 					if (human.get_target_lock(shooter.faction_group))
