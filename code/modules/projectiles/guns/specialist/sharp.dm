@@ -89,7 +89,7 @@
 		if (SHARP_SAFE_MODE)
 			current_mine_mode = SHARP_DANGER_MODE
 			mine_mode_notice += "[icon2html(src, user)] You set [src]'s mine mode to [current_mine_mode]. Explosive ammo will not blow up near detected IFF targets."
-	user.balloon_alert(user, "[current_mine_mode] mode activated.")
+	user.balloon_alert(user, "[current_mine_mode] mode activated")
 	to_chat(user, SPAN_NOTICE(mine_mode_notice))
 
 
@@ -183,7 +183,7 @@
 		switch(mine_mode)
 			if(SHARP_DIRECTED_MODE)
 				explosion_strength = 90
-				explosion_falloff = 90
+				explosion_falloff *= 10
 			if(SHARP_SAFE_MODE)
 				for(var/mob/living/carbon/human in range((explosion_strength / explosion_falloff) + 1, target))
 					if (human.get_target_lock(shooter.faction_group))
@@ -192,7 +192,7 @@
 						target.balloon_alert(target, "an attached explosive dart releases itself from you!", text_color = "#ce1e1e")
 						to_chat(shooter, SPAN_WARNING("[shot_dart] recognized an IFF marked target and did not detonate!"))
 						return
-		cell_explosion(get_turf(target), explosion_strength, explosion_falloff, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, cause_data)
+		cell_explosion(get_turf(target), explosion_strength, explosion_falloff, EXPLOSION_FALLOFF_SHAPE_LINEAR, CARDINAL_ALL_DIRS, cause_data)
 
 
 /datum/ammo/rifle/sharp/incendiary
@@ -237,9 +237,10 @@
 		var/smoke_radius = 2
 		switch(mine_mode)
 			if(SHARP_DIRECTED_MODE)
-				var/datum/reagent/napalm/green/reagent = new()
-				var/flame_radius = 1
+				var/datum/reagent/napalm/gel/reagent = new()
+				var/flame_radius = 0
 				new /obj/flamer_fire(get_turf(target), WEAKREF(shooter), reagent, flame_radius)
+				return
 			if(SHARP_SAFE_MODE)
 				for(var/mob/living/carbon/human in range(smoke_radius + 1, target))
 					if (human.get_target_lock(shooter.faction_group))

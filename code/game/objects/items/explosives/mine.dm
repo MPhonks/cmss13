@@ -486,7 +486,7 @@
 		explosion_falloff = 25
 	switch(mine_mode)
 		if(SHARP_DIRECTED_MODE)
-			explosion_falloff *= 2
+			explosion_falloff = explosion_strength
 		if(SHARP_SAFE_MODE)
 			for(var/mob/living/carbon/human in range((explosion_strength / explosion_falloff) + 1, src))
 				if (human.get_target_lock(iff_signal))
@@ -511,15 +511,15 @@
 	deltimer(timer_id)
 
 /obj/item/explosive/mine/sharp/proc/rearm(mob/user)
+	mine_level = 1
+	icon_state = rearm_icon_state
+	desc = rearm_desc
+	addtimer(PROC_REF(disarm), 5 MINUTES, TIMER_DELETE_ME)
+	deploy_mine(user)
 	anchored = TRUE
 	active = TRUE
 	triggered = TRUE
-	icon_state = rearm_icon_state
-	desc = rearm_desc
 	disarmed = FALSE
-	mine_level = 1
-	addtimer(PROC_REF(disarm), 5 MINUTES, TIMER_DELETE_ME)
-	deploy_mine(user)
 
 /obj/item/explosive/mine/sharp/attack_self(mob/living/user)
 	if(disarmed)
@@ -606,8 +606,8 @@
 		playsound(loc, 'sound/weapons/gun_flamethrower3.ogg', 45)
 	switch(mine_mode)
 		if (SHARP_DIRECTED_MODE)
-			smoke_radius = 1
-			flame_radius = 1
+			smoke_radius = 0
+			flame_radius = 0
 		if (SHARP_SAFE_MODE)
 			for(var/mob/living/carbon/human in range(flame_radius + 1, src))
 				if (human.get_target_lock(iff_signal))
