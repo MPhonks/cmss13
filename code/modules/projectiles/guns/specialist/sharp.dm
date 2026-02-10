@@ -189,7 +189,7 @@
 					if (human.get_target_lock(shooter.faction_group))
 						playsound(src, 'sound/weapons/smartgun_fail.ogg', src, 25)
 						to_chat(target, SPAN_WARNING("[shot_dart] releases itself from you!"))
-						target.balloon_alert(target, "an attached explosive dart releases itself from you!", text_color = "#ce1e1e")
+						target.balloon_alert(target, "an attached explosive dart releases itself from you!")
 						to_chat(shooter, SPAN_WARNING("[shot_dart] recognized an IFF marked target and did not detonate!"))
 						return
 		cell_explosion(get_turf(target), explosion_strength, explosion_falloff, EXPLOSION_FALLOFF_SHAPE_LINEAR, CARDINAL_ALL_DIRS, cause_data)
@@ -246,7 +246,7 @@
 					if (human.get_target_lock(shooter.faction_group))
 						playsound(src, 'sound/weapons/smartgun_fail.ogg', src, 25)
 						to_chat(target, SPAN_WARNING("[shot_dart] releases itself from you!"))
-						target.balloon_alert(target, "an attached incendiary dart releases itself from you!", text_color = "#ce7c1e")
+						target.balloon_alert(target, "an attached incendiary dart releases itself from you!")
 						to_chat(shooter, SPAN_WARNING("[shot_dart] recognized an IFF marked target and did not detonate!"))
 						return
 		smoke.set_up(smoke_radius, 0, get_turf(target))
