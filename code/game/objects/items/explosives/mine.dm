@@ -517,6 +517,7 @@
 	icon_state = rearm_icon_state
 	desc = rearm_desc
 	disarmed = FALSE
+	mine_level = 1
 	addtimer(PROC_REF(disarm), 5 MINUTES, TIMER_DELETE_ME)
 	deploy_mine(user)
 
