@@ -177,7 +177,7 @@
 /datum/ammo/rifle/sharp/explosive/proc/delayed_explosion(obj/projectile/shot_dart, mob/target, mob/shooter)
 	if(ismob(target))
 		var/explosion_strength = 60
-		var/explosion_falloff = 35
+		var/explosion_falloff = 30
 		var/cause_data = create_cause_data("P9 SHARP Rifle", shooter)
 
 		switch(mine_mode)
@@ -185,9 +185,9 @@
 				explosion_strength = 90
 				explosion_falloff = explosion_strength
 			if(SHARP_SAFE_MODE)
-				for(var/mob/living/carbon/human in range((explosion_strength / explosion_falloff) + 1, target))
+				for(var/mob/living/carbon/human in range((explosion_strength / explosion_falloff), target))
 					if (human.get_target_lock(shooter.faction_group))
-						playsound(src, 'sound/weapons/smartgun_fail.ogg', src, 25)
+						playsound(target, 'sound/weapons/smartgun_fail.ogg', target, 25)
 						to_chat(target, SPAN_WARNING("[shot_dart] releases itself from you!"))
 						target.balloon_alert(target, "an attached explosive dart releases itself from you!")
 						to_chat(shooter, SPAN_WARNING("[shot_dart] recognized an IFF marked target and did not detonate!"))
@@ -244,7 +244,7 @@
 			if(SHARP_SAFE_MODE)
 				for(var/mob/living/carbon/human in range(smoke_radius + 1, target))
 					if (human.get_target_lock(shooter.faction_group))
-						playsound(src, 'sound/weapons/smartgun_fail.ogg', src, 25)
+						playsound(target, 'sound/weapons/smartgun_fail.ogg', target, 25)
 						to_chat(target, SPAN_WARNING("[shot_dart] releases itself from you!"))
 						target.balloon_alert(target, "an attached incendiary dart releases itself from you!")
 						to_chat(shooter, SPAN_WARNING("[shot_dart] recognized an IFF marked target and did not detonate!"))
