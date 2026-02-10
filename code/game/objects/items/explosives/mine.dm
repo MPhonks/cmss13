@@ -505,7 +505,7 @@
 	rearm_icon_state = icon_state
 	icon_state = "sharp_mine_disarmed"
 	rearm_desc = desc
-	desc = "A disarmed P9 SHARP rifle dart. With training, it can be rearmed with a security tuner."
+	desc = "A disarmed P9 SHARP rifle dart. With the right training, it can potentially be rearmed with a security access tuner."
 	QDEL_NULL(tripwire)
 	disarmed = TRUE
 	deltimer(timer_id)

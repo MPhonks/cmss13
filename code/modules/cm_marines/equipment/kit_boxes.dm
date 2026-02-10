@@ -46,6 +46,7 @@
 	new /obj/item/explosive/plastic(src)
 	new /obj/item/explosive/plastic(src)
 	new /obj/item/device/binoculars(src)
+	new /obj/item/device/multitool(src)
 
 	// loader
 	new /obj/item/storage/box/kit/loader(src)
