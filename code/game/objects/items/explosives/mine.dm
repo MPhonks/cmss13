@@ -558,13 +558,6 @@
 
 /obj/item/explosive/mine/sharp/proc/healthcheck()
 	if(health <= 0)
-		if(mine_mode == SHARP_SAFE_MODE)
-			for(var/mob/living/carbon/human in range((explosion_strength / explosion_falloff) + 1, src))
-				if (human.get_target_lock(iff_signal))
-					playsound(src, 'sound/weapons/smartgun_fail.ogg', src, 25)
-					qdel(src)
-					// to_chat(user, SPAN_WARNING("[src] recognized an IFF marked target and did not detonate!"))
-					return
 		prime()
 
 /obj/item/explosive/mine/sharp/incendiary
@@ -579,21 +572,22 @@
 	else if(user)
 		cause_data.weak_mob = WEAKREF(user)
 
-	var/is_smoke = FALSE
+	var/is_smoke = TRUE
 	var/datum/reagent
 	var/smoke_radius = 2
 	var/flame_radius = 2
 	if(mine_level == 1)
-		is_smoke = TRUE
 		playsound(loc, 'sound/weapons/gun_sharp_explode.ogg', 100)
-		return
 	else if(mine_level == 2)
+		is_smoke = FALSE
 		reagent = /datum/reagent/napalm/green
 		playsound(loc, 'sound/weapons/gun_flamethrower3.ogg', 45)
 	else if(mine_level == 3)
+		is_smoke = FALSE
 		reagent = /datum/reagent/napalm/ut
 		playsound(loc, 'sound/weapons/gun_flamethrower3.ogg', 45)
 	else
+		is_smoke = FALSE
 		reagent = /datum/reagent/napalm/ut
 		flame_radius = 3
 		playsound(loc, 'sound/weapons/gun_flamethrower3.ogg', 45)

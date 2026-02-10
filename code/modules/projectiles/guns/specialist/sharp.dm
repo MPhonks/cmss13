@@ -185,7 +185,7 @@
 				explosion_strength = 90
 				explosion_falloff = explosion_strength
 			if(SHARP_SAFE_MODE)
-				for(var/mob/living/carbon/human in range((explosion_strength / explosion_falloff), target))
+				for(var/mob/living/carbon/human in range((explosion_strength / explosion_falloff) - 1, target))
 					if (human.get_target_lock(shooter.faction_group))
 						playsound(target, 'sound/weapons/smartgun_fail.ogg', target, 25)
 						to_chat(target, SPAN_WARNING("[shot_dart] releases itself from you!"))
