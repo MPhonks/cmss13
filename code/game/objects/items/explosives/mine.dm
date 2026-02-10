@@ -423,7 +423,7 @@
 /obj/item/explosive/mine/sharp/attackby(obj/item/W, mob/user)
 	if(user.action_busy)
 		return
-	if(disarmed)
+	if(!disarmed)
 		if(HAS_TRAIT(W, TRAIT_TOOL_MULTITOOL))
 			user.visible_message(SPAN_NOTICE("[user] starts disarming [src]."), \
 			SPAN_NOTICE("You start disarming [src]."))
