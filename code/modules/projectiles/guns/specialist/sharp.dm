@@ -121,6 +121,7 @@
 	shell_speed = AMMO_SPEED_TIER_2
 	var/embed_object = /obj/item/sharp/explosive
 	var/mine_level = 0
+	var/mine_mode = SHARP_DANGER_MODE
 
 /datum/ammo/rifle/sharp/on_embed(mob/embedded_mob, obj/limb/target_organ)
 	if(!ishuman(embedded_mob))
@@ -151,13 +152,14 @@
 		return
 
 	var/mob/shooter = shot_dart.firer
+	var/obj/item/weapon/gun/rifle/sharp/weapon = shot_dart.shot_from
 	shake_camera(target, 2, 1)
 	if(shooter && ismob(shooter))
 		target.balloon_alert(target, "you have been hit by an explosive dart!", text_color = "#ce1e1e")
 		if(!target.get_target_lock(shooter.faction_group))
-			var/obj/item/weapon/gun/rifle/sharp/weapon = shot_dart.shot_from
 			playsound(get_turf(target), 'sound/weapons/gun_sharp_explode.ogg', 100)
 			if(weapon)
+				mine_mode = weapon.current_mine_mode
 				addtimer(CALLBACK(src, PROC_REF(delayed_explosion), shot_dart, target, shooter), 5 SECONDS)
 
 /datum/ammo/rifle/sharp/explosive/drop_dart(loc, obj/projectile/shot_dart, mob/shooter)
@@ -178,9 +180,6 @@
 		var/explosion_strength = 60
 		var/falloff_size = 35
 		var/cause_data = create_cause_data("P9 SHARP Rifle", shooter)
-
-		var/obj/item/weapon/gun/rifle/sharp/gun = shot_dart.shot_from
-		var/mine_mode = gun.current_mine_mode
 
 		switch(mine_mode)
 			if(SHARP_DIRECTED_MODE)
@@ -207,13 +206,14 @@
 	if(!target || target == shot_dart.firer)
 		return
 	var/mob/shooter = shot_dart.firer
+	var/obj/item/weapon/gun/rifle/sharp/weapon = shot_dart.shot_from
 	shake_camera(target, 2, 1)
 	if(shooter && ismob(shooter))
-		target.balloon_alert(target, "you have been hit by an incendiary dart!", text_color = "#ce1e1e")
+		target.balloon_alert(target, "you have been hit by an incendiary dart!", text_color = "#ce7c1e")
 		if(!target.get_target_lock(shooter.faction_group))
-			var/obj/item/weapon/gun/rifle/sharp/weapon = shot_dart.shot_from
 			playsound(get_turf(target), 'sound/weapons/gun_sharp_explode.ogg', 100)
 			if(weapon)
+				mine_mode = weapon.current_mine_mode
 				addtimer(CALLBACK(src, PROC_REF(delayed_fire), shot_dart, target, shooter), 5 SECONDS)
 
 /datum/ammo/rifle/sharp/incendiary/drop_dart(loc, obj/projectile/shot_dart, mob/shooter)
@@ -233,9 +233,6 @@
 	if(ismob(target))
 		var/datum/effect_system/smoke_spread/phosphorus/smoke = new /datum/effect_system/smoke_spread/phosphorus/sharp
 		var/smoke_radius = 2
-
-		var/obj/item/weapon/gun/rifle/sharp/gun = shot_dart.shot_from
-		var/mine_mode = gun.current_mine_mode
 
 		switch(mine_mode)
 			if(SHARP_DIRECTED_MODE)
