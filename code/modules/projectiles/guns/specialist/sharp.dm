@@ -177,7 +177,7 @@
 /datum/ammo/rifle/sharp/explosive/proc/delayed_explosion(obj/projectile/shot_dart, mob/target, mob/shooter)
 	if(ismob(target))
 		var/explosion_strength = 60
-		var/explosion_falloff = 30
+		var/explosion_falloff = 20
 		var/cause_data = create_cause_data("P9 SHARP Rifle", shooter)
 
 		switch(mine_mode)
