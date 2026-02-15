@@ -156,7 +156,7 @@
 			playsound(get_turf(target), 'sound/weapons/gun_sharp_explode.ogg', 100)
 			if(weapon)
 				mine_mode = weapon.current_mine_mode
-				addtimer(CALLBACK(src, PROC_REF(delayed_explosion), shot_dart, target, shooter), 5 SECONDS)
+				addtimer(CALLBACK(src, PROC_REF(delayed_explosion), shot_dart, target, shooter), 2.5 SECONDS)
 
 /datum/ammo/rifle/sharp/explosive/drop_dart(loc, obj/projectile/shot_dart, mob/shooter)
 	var/signal_explosion = FALSE
@@ -213,7 +213,7 @@
 			playsound(get_turf(target), 'sound/weapons/gun_sharp_explode.ogg', 100)
 			if(weapon)
 				mine_mode = weapon.current_mine_mode
-				addtimer(CALLBACK(src, PROC_REF(delayed_fire), shot_dart, target, shooter), 5 SECONDS)
+				addtimer(CALLBACK(src, PROC_REF(delayed_fire), shot_dart, target, shooter), 2.5 SECONDS)
 
 /datum/ammo/rifle/sharp/incendiary/drop_dart(loc, obj/projectile/shot_dart, mob/shooter)
 	var/signal_explosion = FALSE
