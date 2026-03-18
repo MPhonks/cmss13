@@ -132,6 +132,8 @@
 	RegisterSignal(ot_phone, COMSIG_TRANSMITTER_UPDATE_ICON, PROC_REF(handle_phone))
 
 /datum/tutorial/marine/ot_basic/proc/phone_softlock_pizza(mob/speaking, message, datum/language/L)
+	SIGNAL_HANDLER
+
 	var/has_phone = FALSE
 	var/obj/active_item = tutorial_mob.get_active_hand()
 	var/obj/inactive_item = tutorial_mob.get_inactive_hand()
@@ -156,12 +158,24 @@
 	message_to_player("Start by creating an assembly. Find the autolathe, vend an igniter, and a timer.")
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/autolathe/tutorial, autolathe)
 	add_highlight(autolathe)
-	RegisterSignal(autolathe, COMSIG_ACTION_ACTIVATED)
+	RegisterSignal(autolathe, COMSIG_AUTOLATHE_PRINTED, PROC_REF(vendor_check_printed))
 
-/datum/tutorial/check
+/datum/tutorial/marine/ot_basic/proc/vendor_check_printed(autolathe_datum, made_item)
+	message_to_player(made_item)
+	if(istype(made_item, /obj/item/device/assembly/igniter))
+		igniter_printed = TRUE
+	if(istype(made_item, /obj/item/device/assembly/timer))
+		timer_printed = TRUE
+	if (igniter_printed && timer_printed)
+		TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/autolathe/tutorial, autolathe)
+		remove_highlight(autolathe)
+		UnregisterSignal(autolathe, COMSIG_AUTOLATHE_PRINTED)
+
 
 // --- Phone Stuff ---
 /datum/tutorial/marine/ot_basic/proc/handle_phone()
+	SIGNAL_HANDLER
+
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_workshop, ot_phone)
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_requisitions, req_phone)
 	if(ot_phone.icon_state != "wall_phone")
