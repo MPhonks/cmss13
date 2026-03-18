@@ -457,6 +457,8 @@ GLOBAL_LIST_INIT(autolathe_wire_descriptions, flatten_numeric_alist(alist(
 		var/obj/item/stack/S = I
 		S.amount = multiplier
 
+	SEND_SIGNAL(src, COMSIG_AUTOLATHE_PRINTED)
+
 /obj/structure/machinery/autolathe/proc/isWireCut(wire)
 	return !(wires & getWireFlag(wire))
 

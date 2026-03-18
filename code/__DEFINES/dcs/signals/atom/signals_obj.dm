@@ -75,3 +75,6 @@
 // from /obj/item/device/binoculars/range/designator/acquire_target()
 #define COMSIG_DESIGNATOR_LASE "comsig_designator_lase"
 #define COMSIG_DESIGNATOR_LASE_OFF "comsig_designator_lase_off"
+
+// from /obj/structure/machinery/autolathe/proc/print_item() : (datum/autolathe/recipe/making, multiplier, turf/make_loc)
+#define COMSIG_AUTOLATHE_PRINTED "autolathe_printed"
