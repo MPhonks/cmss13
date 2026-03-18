@@ -161,6 +161,8 @@
 	RegisterSignal(autolathe, COMSIG_AUTOLATHE_PRINTED, PROC_REF(vendor_check_printed))
 
 /datum/tutorial/marine/ot_basic/proc/vendor_check_printed(autolathe_datum, made_item)
+	SIGNAL_HANDLER
+
 	message_to_player(made_item)
 	if(istype(made_item, /obj/item/device/assembly/igniter))
 		igniter_printed = TRUE
@@ -173,7 +175,7 @@
 
 
 // --- Phone Stuff ---
-/datum/tutorial/marine/ot_basic/proc/handle_phone()
+/datum/tutorial/marine/ot_basic/proc/handle_phone() // fix whatever this means
 	SIGNAL_HANDLER
 
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_workshop, ot_phone)
