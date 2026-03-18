@@ -173,3 +173,145 @@ GLOBAL_LIST_INIT(cm_vending_clothing_medic_sandbox, list(
 
 /obj/structure/machinery/cm_vending/clothing/medic/tutorial/get_listed_products(mob/user)
 	return GLOB.cm_vending_clothing_medic_sandbox
+
+//------------OT TUTORIAL STUFF---------------
+
+// Structures
+
+/obj/structure/machinery/door/poddoor/shutters/almayer/tutorial/ot
+	name = "\improper Secure Storage"
+	id = "ot_tutorial_shutters"
+
+/obj/structure/machinery/door_control/tutorial/ot_shutters
+	name = "Secure Storage Shutters"
+	id = "ot_tutorial_shutters"
+	pixel_x = -6
+	pixel_y = -4
+
+/obj/structure/machinery/door_control/tutorial/ot_line
+	name = "Next button"
+	id = "ot_tutorial_line"
+	pixel_x = -6
+	pixel_y = -4
+
+/obj/structure/machinery/computer/cameras/wooden_tv/ot/tutorial
+	pixel_y = 10
+
+/obj/structure/machinery/computer/non_functional/apollo_controller/tutorial
+	name = "APOLLO Maintenance Controller"
+	desc = "A console built to facilitate Working Joes and their operation, allowing for simple allocation of resources."
+	icon = 'icons/obj/structures/machinery/ares.dmi'
+	icon_state = "console"
+	pixel_x = 6
+
+/obj/structure/machinery/computer/non_functional/demolitions_simulator/tutorial
+	name = "demolitions simulator"
+	desc = "A powerful simulator that can simulate explosions. Its processors need a cooldown of approximately 1 minute after each simulation."
+	icon = 'icons/obj/structures/machinery/computer.dmi'
+	icon_state = "demo_sim"
+	pixel_x = -9
+
+/obj/structure/transmitter/tutorial/ot_workshop
+	name = "OT Telephone"
+	phone_id = "OT Tutorial - Ordnance Tech"
+	networks_receive = list("OT_TUTORIAL")
+	networks_transmit = list("OT_TUTORIAL")
+	phone_category = "OT Tutorial"
+	dir = 8
+	pixel_x = 14
+
+/obj/structure/transmitter/tutorial/ot_requisitions
+	name = "Requisitions Telephone"
+	desc = "You shouldn't be able to see this... Whoopsie-daisy."
+	phone_id = "OT Tutorial - Requisitions"
+	networks_receive = list("OT_TUTORIAL")
+	networks_transmit = list("OT_TUTORIAL")
+	phone_category = "OT Tutorial"
+	dir = 8
+	pixel_x = 14
+	call_sound = null
+	pickup_sound = null
+	alpha = 0
+
+/obj/structure/machinery/autolathe/tutorial
+
+/obj/structure/machinery/cm_vending/sorted/tech/electronics_storage/tutorial
+
+/obj/structure/machinery/autolathe/armylathe/partial/tutorial
+
+/obj/structure/machinery/cm_vending/sorted/tech/comp_storage/tutorial
+
+/obj/structure/closet/secure_closet/tutorial
+
+/obj/structure/machinery/reagentgrinder/industrial/tutorial
+
+/obj/structure/machinery/chem_master/industry_mixer/tutorial
+
+/obj/structure/machinery/disposal/delivery/tutorial
+	name = "Requisitions Delivery Unit"
+	desc = "A pneumatic delivery unit. Sends items to the requisitions."
+	icon_state = "delivery_engi"
+	pixel_y = 30
+	density = 0
+
+/obj/structure/disposaloutlet/tutorial
+	name = "Tutorial Delivery Outlet"
+	desc = "An outlet for the pneumatic delivery system."
+	icon_state = "delivery_outlet"
+	pixel_y = 30
+	range = 0
+	density = 0
+
+/obj/structure/closet/crate/tutorial/ot_mats
+
+/obj/structure/closet/crate/tutorial/ot_exotics
+
+/obj/structure/closet/secure_closet/engineering_materials/tutorial
+
+/obj/structure/closet/secure_closet/freezer/industry/tutorial
+	locked = 0
+	opened = 1
+
+/obj/structure/closet/l3closet/tutorial
+
+/obj/structure/reagent_dispensers/tank/pacid/tutorial
+
+/obj/structure/reagent_dispensers/tank/ammonia/tutorial
+
+/obj/structure/reagent_dispensers/tank/fuel/tutorial
+
+/obj/structure/reagent_dispensers/tank/sacid/tutorial
+
+/obj/structure/reagent_dispensers/tank/fuel/gas/hydrogen/tutorial
+
+/obj/structure/reagent_dispensers/tank/fuel/gas/methane/tutorial
+
+/obj/structure/reagent_dispensers/tank/fuel/oxygentank/tutorial
+
+/obj/structure/reagent_dispensers/tank/fuel/custom/tutorial/north
+
+/obj/structure/reagent_dispensers/tank/fuel/custom/tutorial/south
+
+// Items
+
+/obj/item/tool/hand_labeler/tutorial
+	pixel_x = 7
+	pixel_y = 10
+
+/obj/item/reagent_container/glass/beaker/bluespace/tutorial/one
+	pixel_x = -10
+	pixel_y = 10
+
+/obj/item/reagent_container/glass/beaker/bluespace/tutorial/two
+	pixel_x = 5
+	pixel_y = 10
+
+/obj/item/reagent_container/glass/beaker/bluespace/tutorial/three
+	pixel_x = -10
+	pixel_y = -5
+
+/obj/item/reagent_container/glass/beaker/bluespace/tutorial/four
+	pixel_x = 5
+	pixel_y = -5
+
+/obj/item/reagent_container/glass/beaker/catalyst/silver/tutorial

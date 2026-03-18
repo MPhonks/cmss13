@@ -267,3 +267,9 @@ GLOBAL_LIST_EMPTY_TYPED(ongoing_tutorials, /datum/tutorial)
 	mappath = "maps/tutorial/tutorial_15x10_hm.dmm"
 	width = 15
 	height = 10
+
+/datum/map_template/tutorial/s15x10/ot
+	name = "Tutorial Zone (15x10) (OT Tutorial)"
+	mappath = "maps/tutorial/tutorial_15x10_ot.dmm"
+	width = 15
+	height = 10

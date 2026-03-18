@@ -1,0 +1,577 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"dJ" = (
+/obj/structure/surface/table/reinforced/black{
+	breakable = 0
+	},
+/turf/open/floor/almayer/plate,
+/area/misc/tutorial)
+"eD" = (
+/turf/open/floor/almayer/orange/southeast,
+/area/misc/tutorial)
+"ft" = (
+/obj/structure/reagent_dispensers/tank/pacid/tutorial,
+/turf/open/floor/almayer/test_floor5,
+/area/misc/tutorial)
+"fM" = (
+/turf/open/floor/almayer/orange/northeast,
+/area/misc/tutorial)
+"gz" = (
+/obj/effect/landmark/tutorial_bottom_left,
+/turf/closed/wall/almayer/outer/internal,
+/area/misc/tutorial)
+"hm" = (
+/obj/effect/decal/cleanable/blood/oil,
+/turf/open/floor/almayer/plating_stripedcorner,
+/area/misc/tutorial)
+"hu" = (
+/obj/effect/decal/cleanable/blood/oil,
+/turf/open/floor/almayer/plating_stripedcorner/west,
+/area/misc/tutorial)
+"ib" = (
+/turf/open/floor/almayer/plate,
+/area/misc/tutorial)
+"ik" = (
+/obj/item/stack/sheet/aluminum{
+	amount = 20
+	},
+/obj/item/stack/sheet/copper{
+	amount = 20;
+	pixel_y = 4
+	},
+/obj/item/stack/sheet/mineral/gold{
+	amount = 3;
+	pixel_y = 4
+	},
+/obj/item/stack/sheet/mineral/silver{
+	amount = 5;
+	pixel_x = 4;
+	pixel_y = 2
+	},
+/obj/item/stack/sheet/mineral/phoron{
+	amount = 25
+	},
+/obj/structure/closet/crate/tutorial/ot_exotics,
+/turf/open/floor/almayer/cargo,
+/area/misc/tutorial)
+"kG" = (
+/obj/item/storage/backpack/marine/rocketpack,
+/obj/item/storage/backpack/marine/rocketpack,
+/obj/item/storage/backpack/marine/mortarpack,
+/obj/item/storage/backpack/marine/mortarpack,
+/obj/item/storage/backpack/marine/grenadepack,
+/obj/item/storage/backpack/marine/grenadepack,
+/obj/structure/closet/secure_closet/tutorial,
+/turf/open/floor/almayer/cargo,
+/area/misc/tutorial)
+"kH" = (
+/turf/open/floor/almayer/plating_striped,
+/area/misc/tutorial)
+"kI" = (
+/obj/item/stack/sheet/mineral/plastic{
+	amount = 5
+	},
+/obj/item/stack/sheet/glass{
+	amount = 50;
+	pixel_x = 3;
+	pixel_y = 3
+	},
+/obj/item/stack/sheet/metal{
+	amount = 50
+	},
+/obj/item/stack/sheet/plasteel{
+	amount = 30;
+	pixel_x = 4;
+	pixel_y = 4
+	},
+/obj/structure/closet/crate/tutorial/ot_mats,
+/turf/open/floor/almayer/cargo,
+/area/misc/tutorial)
+"kK" = (
+/turf/open/floor/almayer/plating_stripedcorner/north,
+/area/misc/tutorial)
+"ld" = (
+/turf/open/shuttle/lifeboat/plating_striped,
+/area/misc/tutorial)
+"lz" = (
+/obj/effect/decal/cleanable/blood/oil,
+/turf/open/floor/almayer/orange/south,
+/area/misc/tutorial)
+"mC" = (
+/turf/open/floor/tdome/test_floor4,
+/area/misc/tutorial)
+"nn" = (
+/obj/structure/reagent_dispensers/tank/fuel/oxygentank/tutorial,
+/turf/open/floor/almayer/test_floor5,
+/area/misc/tutorial)
+"pp" = (
+/obj/structure/machinery/disposal/delivery/tutorial,
+/turf/open/floor/almayer/orange/north,
+/area/misc/tutorial)
+"pN" = (
+/obj/structure/surface/table/reinforced/almayer_B{
+	breakable = 0;
+	explo_proof = 1
+	},
+/obj/structure/machinery/reagentgrinder/industrial/tutorial{
+	pixel_y = 5
+	},
+/turf/open/floor/almayer/orange,
+/area/misc/tutorial)
+"pY" = (
+/turf/open/floor/almayer/plating_striped/north,
+/area/misc/tutorial)
+"qf" = (
+/obj/structure/surface/table/reinforced/almayer_B{
+	breakable = 0;
+	explo_proof = 1
+	},
+/obj/structure/machinery/computer/non_functional/apollo_controller/tutorial,
+/obj/structure/machinery/door_control/tutorial/ot_line,
+/turf/open/floor/almayer/orange/north,
+/area/misc/tutorial)
+"ql" = (
+/obj/structure/closet/l3closet/tutorial,
+/turf/open/floor/almayer/test_floor5,
+/area/misc/tutorial)
+"qN" = (
+/obj/structure/machinery/autolathe/tutorial,
+/turf/open/floor/almayer/cargo,
+/area/misc/tutorial)
+"qR" = (
+/obj/structure/closet/secure_closet/engineering_materials/tutorial,
+/turf/open/floor/almayer/cargo,
+/area/misc/tutorial)
+"qV" = (
+/obj/structure/reagent_dispensers/tank/fuel/custom/tutorial/north,
+/turf/open/floor/almayer/test_floor5,
+/area/misc/tutorial)
+"rh" = (
+/obj/structure/machinery/door/firedoor/border_only/almayer{
+	dir = 1
+	},
+/turf/open/floor/almayer/test_floor4,
+/area/misc/tutorial)
+"rp" = (
+/obj/structure/closet/secure_closet/freezer/industry/tutorial,
+/turf/open/floor/almayer/test_floor5,
+/area/misc/tutorial)
+"sb" = (
+/obj/structure/machinery/autolathe/armylathe/partial/tutorial,
+/turf/open/floor/almayer/cargo,
+/area/misc/tutorial)
+"sX" = (
+/obj/structure/reagent_dispensers/tank/ammonia/tutorial,
+/turf/open/floor/almayer/test_floor5,
+/area/misc/tutorial)
+"tg" = (
+/obj/structure/surface/rack,
+/turf/open/floor/almayer/orange/north,
+/area/misc/tutorial)
+"up" = (
+/obj/structure/surface/table/reinforced/almayer_B{
+	breakable = 0;
+	explo_proof = 1
+	},
+/obj/structure/machinery/computer/cameras/wooden_tv/ot/tutorial,
+/turf/open/floor/almayer/orange/north,
+/area/misc/tutorial)
+"us" = (
+/turf/open/floor/almayer/orange/south,
+/area/misc/tutorial)
+"uG" = (
+/obj/structure/machinery/door/airlock/multi_tile/almayer/engidoor/glass{
+	req_one_access = list(19,35);
+	name = "\improper Ordnance Workshop";
+	lights = 0;
+	locked = 1;
+	no_panel = 1
+	},
+/obj/structure/machinery/door/firedoor/border_only/almayer{
+	dir = 1
+	},
+/turf/open/floor/almayer/test_floor4,
+/area/misc/tutorial)
+"vT" = (
+/obj/structure/machinery/line_nexter{
+	dir = 1;
+	id = "ot_tutorial_line";
+	pixel_y = 7
+	},
+/turf/open/floor/almayer/cargo_arrow/north,
+/area/misc/tutorial)
+"wK" = (
+/obj/structure/barricade/handrail{
+	dir = 4;
+	layer = 3.1;
+	pixel_x = 1
+	},
+/obj/structure/disposaloutlet/tutorial,
+/turf/open/floor/almayer/cargo,
+/area/misc/tutorial)
+"xo" = (
+/obj/item/tool/wet_sign{
+	layer = 6;
+	pixel_y = 18
+	},
+/turf/open/floor/almayer,
+/area/misc/tutorial)
+"yb" = (
+/turf/open/floor/almayer/plating_stripedcorner/east,
+/area/misc/tutorial)
+"yB" = (
+/turf/open/floor/almayer/orange/east,
+/area/misc/tutorial)
+"yM" = (
+/obj/structure/machinery/cm_vending/sorted/tech/comp_storage/tutorial,
+/turf/open/floor/almayer/cargo,
+/area/misc/tutorial)
+"yS" = (
+/turf/open/floor/almayer/orangecorner/north,
+/area/misc/tutorial)
+"zr" = (
+/turf/closed/wall/almayer/outer/internal,
+/area/misc/tutorial)
+"Ae" = (
+/turf/open/floor/almayer/orange/west,
+/area/misc/tutorial)
+"An" = (
+/obj/structure/machinery/cm_vending/sorted/tech/electronics_storage/tutorial,
+/turf/open/floor/almayer/cargo,
+/area/misc/tutorial)
+"Bj" = (
+/turf/open/floor/almayer/orange/north,
+/area/misc/tutorial)
+"Bq" = (
+/obj/structure/reagent_dispensers/tank/fuel/gas/hydrogen/tutorial,
+/turf/open/floor/almayer/test_floor5,
+/area/misc/tutorial)
+"Bx" = (
+/obj/structure/machinery/door/airlock/almayer/engineering/reinforced/OT{
+	dir = 2
+	},
+/obj/structure/machinery/door/poddoor/shutters/almayer/tutorial/ot,
+/turf/open/floor/tdome/test_floor4,
+/area/misc/tutorial)
+"BS" = (
+/obj/structure/surface/table/reinforced/almayer_B{
+	breakable = 0;
+	explo_proof = 1
+	},
+/turf/open/floor/almayer/orange/north,
+/area/misc/tutorial)
+"Cy" = (
+/obj/structure/transmitter/tutorial/ot_workshop,
+/turf/open/floor/almayer/orange/east,
+/area/misc/tutorial)
+"CU" = (
+/obj/structure/reagent_dispensers/tank/fuel/custom/tutorial/south,
+/turf/open/floor/almayer/test_floor5,
+/area/misc/tutorial)
+"DX" = (
+/turf/open/floor/almayer/greenfull,
+/area/misc/tutorial)
+"Eg" = (
+/obj/structure/disposalpipe/segment,
+/turf/closed/wall/almayer/outer/internal,
+/area/misc/tutorial)
+"Ew" = (
+/obj/structure/machinery/chem_master/industry_mixer/tutorial,
+/turf/open/floor/almayer/cargo,
+/area/misc/tutorial)
+"EF" = (
+/obj/structure/bed/chair/office/dark{
+	dir = 1
+	},
+/turf/open/floor/almayer/orange/northwest,
+/area/misc/tutorial)
+"EN" = (
+/obj/structure/window/framed/almayer/hull/hijack_bustable,
+/obj/structure/machinery/door/firedoor/border_only/almayer{
+	dir = 1
+	},
+/turf/open/floor/plating,
+/area/misc/tutorial)
+"Fq" = (
+/obj/structure/reagent_dispensers/tank/sacid/tutorial,
+/turf/open/floor/almayer/test_floor5,
+/area/misc/tutorial)
+"Fw" = (
+/obj/structure/closet/secure_closet/guncabinet/red,
+/obj/item/clothing/suit/storage/marine/light/vest,
+/obj/item/clothing/suit/storage/marine/light/vest,
+/turf/open/floor/almayer/cargo,
+/area/misc/tutorial)
+"GW" = (
+/obj/structure/reagent_dispensers/tank/fuel/tutorial,
+/turf/open/floor/almayer/test_floor5,
+/area/misc/tutorial)
+"Js" = (
+/obj/structure/surface/table/reinforced/almayer_B{
+	breakable = 0;
+	climbable = 0;
+	explo_proof = 1
+	},
+/obj/structure/machinery/door/window/southleft{
+	desc = "A window, that is also a door. A windoor if you will. This one is stronger.";
+	health = 500;
+	name = "Reinforced Glass door";
+	req_one_access = list(19,35);
+	req_access = list()
+	},
+/obj/item/desk_bell{
+	anchored = 1;
+	pixel_x = -9;
+	pixel_y = 12
+	},
+/obj/structure/machinery/door/firedoor/border_only/almayer{
+	dir = 1
+	},
+/turf/open/floor/almayer,
+/area/misc/tutorial)
+"Lh" = (
+/obj/structure/barricade/handrail{
+	dir = 1;
+	pixel_y = 6
+	},
+/turf/open/floor/plating/plating_catwalk,
+/area/misc/tutorial)
+"Mb" = (
+/turf/open/floor/almayer,
+/area/misc/tutorial)
+"PI" = (
+/obj/structure/surface/table/reinforced/black{
+	breakable = 0
+	},
+/obj/item/reagent_container/spray/cleaner,
+/turf/open/floor/almayer/plate,
+/area/misc/tutorial)
+"RS" = (
+/obj/structure/reagent_dispensers/tank/fuel/gas/methane/tutorial,
+/turf/open/floor/almayer/test_floor5,
+/area/misc/tutorial)
+"RY" = (
+/obj/structure/machinery/door_control/tutorial/ot_shutters,
+/turf/closed/wall/almayer/outer/internal,
+/area/misc/tutorial)
+"Si" = (
+/turf/open/floor/plating/plating_catwalk,
+/area/misc/tutorial)
+"SN" = (
+/obj/structure/transmitter/tutorial/ot_requisitions,
+/turf/open/floor/almayer/greenfull,
+/area/misc/tutorial)
+"UE" = (
+/obj/structure/barricade/handrail{
+	dir = 1;
+	pixel_y = 6
+	},
+/obj/structure/sign/safety/hazard{
+	pixel_x = 15;
+	pixel_y = -25
+	},
+/obj/structure/sign/safety/fire_haz{
+	pixel_y = -25
+	},
+/turf/open/floor/almayer/cargo_arrow/west,
+/area/misc/tutorial)
+"Vt" = (
+/obj/effect/decal/cleanable/blood/oil,
+/turf/open/floor/almayer/orange/north,
+/area/misc/tutorial)
+"Zv" = (
+/obj/item/paper_bin/uscm{
+	pixel_y = 8;
+	pixel_x = 6
+	},
+/obj/item/tool/pen{
+	pixel_y = 5;
+	pixel_x = 4
+	},
+/obj/structure/surface/table/reinforced/almayer_B{
+	breakable = 0;
+	explo_proof = 1
+	},
+/obj/structure/machinery/computer/non_functional/demolitions_simulator/tutorial,
+/turf/open/floor/almayer/orange/north,
+/area/misc/tutorial)
+
+(1,1,1) = {"
+zr
+zr
+zr
+zr
+zr
+zr
+DX
+DX
+SN
+DX
+"}
+(2,1,1) = {"
+zr
+ft
+kK
+hu
+nn
+zr
+zr
+zr
+gz
+zr
+"}
+(3,1,1) = {"
+zr
+sX
+pY
+ld
+RS
+zr
+BS
+us
+qR
+zr
+"}
+(4,1,1) = {"
+zr
+GW
+pY
+kH
+mC
+Bx
+Bj
+us
+kI
+zr
+"}
+(5,1,1) = {"
+zr
+ql
+pY
+kH
+rp
+RY
+Vt
+us
+ik
+zr
+"}
+(6,1,1) = {"
+zr
+qV
+pY
+kH
+CU
+zr
+up
+us
+Ew
+zr
+"}
+(7,1,1) = {"
+zr
+Fq
+hm
+yb
+Bq
+zr
+wK
+us
+pN
+zr
+"}
+(8,1,1) = {"
+zr
+zr
+zr
+Eg
+zr
+zr
+pp
+us
+kG
+zr
+"}
+(9,1,1) = {"
+zr
+Si
+vT
+Js
+EF
+Ae
+yS
+us
+Fw
+zr
+"}
+(10,1,1) = {"
+zr
+Mb
+Lh
+zr
+qf
+ib
+Si
+us
+zr
+zr
+"}
+(11,1,1) = {"
+zr
+Mb
+Lh
+EN
+Zv
+ib
+PI
+lz
+yM
+zr
+"}
+(12,1,1) = {"
+zr
+Mb
+UE
+zr
+tg
+ib
+dJ
+us
+sb
+zr
+"}
+(13,1,1) = {"
+zr
+Mb
+ib
+uG
+Bj
+ib
+Si
+us
+An
+zr
+"}
+(14,1,1) = {"
+zr
+xo
+ib
+rh
+fM
+Cy
+yB
+eD
+qN
+zr
+"}
+(15,1,1) = {"
+zr
+zr
+zr
+zr
+zr
+zr
+zr
+zr
+zr
+zr
+"}
