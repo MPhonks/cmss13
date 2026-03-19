@@ -35,7 +35,9 @@
 		"metal"      = /obj/item/stack/sheet/metal/large_stack,
 		"plasteel"   = /obj/item/stack/sheet/plasteel/large_stack,
 		"plastic"    = /obj/item/stack/sheet/mineral/plastic,
-		"glass"      = /obj/item/stack/sheet/glass/large_stack
+		"glass"      = /obj/item/stack/sheet/glass/large_stack,
+		"bluespace"  = /obj/item/reagent_container/glass/beaker/bluespace,
+		"silver"     = /obj/item/stack/sheet/mineral/silver/small_stack
 	)
 
 	// Autolathe stage
