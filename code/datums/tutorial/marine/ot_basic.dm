@@ -14,8 +14,10 @@
 	var/patience = 3
 	// Calls without softlock help
 	var/useless_calls = 0
-	// Maximum calls (so that we don't keep spawning items in the tutorial)
+	// Maximum successful calls (so that we don't keep spawning items in the tutorial)
 	var/maximum_calls = 25
+	// Amount of proper succesful made so far
+	var/calls_made = 0
 
 	// Autolathe stage
 	var/igniter_printed = FALSE
@@ -120,42 +122,27 @@
 
 	init_mob()
 	init_npcs()
-	message_to_player("Welcome to the basic tutorial of the Ordnance Technician role, where the real threats to colonial dissidents and extraterrestial liveforms are made and mantained.")
+	message_to_player("Welcome to the basic tutorial of the Ordnance Technician role, where real explosive threats to colonial dissidents and extraterrestial liveforms are made and mantained.")
 	addtimer(CALLBACK(src, PROC_REF(softlock_explanation)), 6 SECONDS)
 
 /datum/tutorial/marine/ot_basic/proc/softlock_explanation()
-	message_to_player("To begin, direct your attention at the phone to the right. Should you ever need something in the tutorial that no longer exists, you can \"order\" it from requisitions. Try ordering... pizza.")
+	message_to_player("To begin, direct your attention at the phone to the right. Should you ever need something in the tutorial that no longer exists, you can \"order\" it from requisitions. Try ordering... <span class='bold'>pizza</span>.")
 	update_objective("Use the phone, call requisitions, and ask for some fresh \"pizza\"!")
 
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_workshop, ot_phone)
 	add_highlight(ot_phone)
 	RegisterSignal(ot_phone, COMSIG_TRANSMITTER_UPDATE_ICON, PROC_REF(handle_phone))
 
-/datum/tutorial/marine/ot_basic/proc/phone_softlock_pizza(mob/speaking, message, datum/language/L)
-	SIGNAL_HANDLER
-
-	var/has_phone = FALSE
-	var/obj/active_item = tutorial_mob.get_active_hand()
-	var/obj/inactive_item = tutorial_mob.get_inactive_hand()
-	if (active_item != null && istype(active_item, /obj/item/phone))
-		has_phone = TRUE
-	if (inactive_item != null && istype(inactive_item, /obj/item/phone))
-		has_phone = TRUE
-
-	if(has_phone && findtext(message, "pizza"))
-		message_to_player("Well done. Your mystery pizza should arrive shortly (look to your left)!")
-		TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_workshop, ot_phone)
-		remove_highlight(ot_phone)
-		softlock_explained = TRUE
-		addtimer(CALLBACK(src, PROC_REF(accept_vend_request), /obj/item/pizzabox/mystery), 2 SECONDS)
-		addtimer(CALLBACK(src, PROC_REF(workshop_tutorial)), 10 SECONDS)
+/datum/tutorial/marine/ot_basic/proc/requisitions_explanation()
+	message_to_player("Remember that the delivery system only exists in this tutorial. Whilst very helpful, there is no guarantee that requisitions will be able to provide you with what you want in a real match.")
+	addtimer(CALLBACK(src, PROC_REF(workshop_tutorial)), 6 SECONDS)
 
 /datum/tutorial/marine/ot_basic/proc/workshop_tutorial()
-	message_to_player("This is a smaller version of your actual workshop. Outside of the tutorial, you can find it south of medbay, on the first floor of the USS Almayer.")
-	addtimer(CALLBACK(src, PROC_REF(vendor_tutorial)), 4 SECONDS)
+	message_to_player("Where you currently are is a smaller version of your actual workshop. Outside of the tutorial, you can find it south of medbay, on the first floor of the USS Almayer.")
+	addtimer(CALLBACK(src, PROC_REF(vendor_tutorial)), 6 SECONDS)
 
 /datum/tutorial/marine/ot_basic/proc/vendor_tutorial()
-	message_to_player("Start by creating an assembly. Find the autolathe, vend an igniter, and a timer.")
+	message_to_player("When you're ready, start the tutorial by creating an <span class='bold'>\"assembly\"</span>. Find the autolathe, vend an igniter, and a timer.")
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/autolathe/tutorial, autolathe)
 	add_highlight(autolathe)
 	RegisterSignal(autolathe, COMSIG_AUTOLATHE_PRINTED, PROC_REF(vendor_check_printed))
@@ -193,8 +180,28 @@
 		addtimer(CALLBACK(src, PROC_REF(phone_talk_start)), 2 SECONDS)
 
 /datum/tutorial/marine/ot_basic/proc/phone_talk_start()
+		RegisterSignal(tutorial_mob, COMSIG_LIVING_SPEAK, PROC_REF(handle_phone_request))
+
+/datum/tutorial/marine/ot_basic/proc/handle_phone_request(mob/speaking, message, datum/language/L)
+	SIGNAL_HANDLER
+
+	var/has_phone = FALSE
+	var/obj/active_item = tutorial_mob.get_active_hand()
+	var/obj/inactive_item = tutorial_mob.get_inactive_hand()
+	if (active_item != null && istype(active_item, /obj/item/phone))
+		has_phone = TRUE
+	if (inactive_item != null && istype(inactive_item, /obj/item/phone))
+		has_phone = TRUE
+
 	if (!softlock_explained)
-		RegisterSignal(tutorial_mob, COMSIG_LIVING_SPEAK, PROC_REF(phone_softlock_pizza))
+		if(has_phone && findtext(message, "pizza"))
+			message_to_player("Well done. Your mystery pizza should arrive shortly through the pneumatic delivery system.")
+			TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_workshop, ot_phone)
+			remove_highlight(ot_phone)
+			softlock_explained = TRUE
+			addtimer(CALLBACK(src, PROC_REF(accept_vend_request), /obj/item/pizzabox/mystery), 1 SECONDS)
+			addtimer(CALLBACK(src, PROC_REF(requisitions_explanation)), 7 SECONDS)
+
 
 /datum/tutorial/marine/ot_basic/proc/joe_pickup_phone()
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_requisitions, ot_phone)
@@ -210,7 +217,7 @@
 	add_highlight(softlock_vender)
 	req_joe.say("Let me help you.")
 	playsound(get_turf(tutorial_mob), 'sound/voice/joe/let_me_help.ogg', 100)
-	addtimer(CALLBACK(src, PROC_REF(vend_item), item_path), 4 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(vend_item), item_path), 3 SECONDS)
 
 /datum/tutorial/marine/ot_basic/proc/vend_item(item_path)
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/disposaloutlet/tutorial, softlock_vender)
