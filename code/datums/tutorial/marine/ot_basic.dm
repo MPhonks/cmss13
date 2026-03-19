@@ -190,10 +190,11 @@
 		if (joe_has_phone_in_hand())
 			req_phone.recall_phone()
 	else
-		addtimer(CALLBACK(src, PROC_REF(joe_pickup_phone)), 2 SECONDS)
 		addtimer(CALLBACK(src, PROC_REF(phone_talk_start)), 2 SECONDS)
 
 /datum/tutorial/marine/ot_basic/proc/phone_talk_start()
+	if (player_has_phone_in_hand())
+		joe_pickup_phone()
 		RegisterSignal(tutorial_mob, COMSIG_LIVING_SPEAK, PROC_REF(handle_phone_request))
 
 /datum/tutorial/marine/ot_basic/proc/handle_phone_request(mob/speaking, message, datum/language/L)
@@ -202,7 +203,7 @@
 	var/has_phone = player_has_phone_in_hand()
 	if (!softlock_explained)
 		if(has_phone && findtext(message, "pizza"))
-			message_to_player("Well done. Your mystery pizza should arrive shortly through the pneumatic delivery system.")
+			message_to_player("Well done. Your onboarding pizza should arrive shortly through the pneumatic delivery system.")
 			TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_workshop, ot_phone)
 			remove_highlight(ot_phone)
 			softlock_explained = TRUE
