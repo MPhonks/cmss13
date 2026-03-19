@@ -168,11 +168,8 @@
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_requisitions, req_phone)
 	if(req_phone.inbound_call == null)
 		UnregisterSignal(tutorial_mob, COMSIG_LIVING_SPEAK)
-		var/joe_has_phone = FALSE
-		var/obj/active_item = req_joe.get_active_hand()
-		if (active_item != null && istype(active_item, /obj/item/phone))
-			joe_has_phone = TRUE
-		if (joe_has_phone)
+		if (joe_has_phone_in_hand())
+			var/obj/active_item = req_joe.get_active_hand()
 			active_item.forceMove(req_phone)
 			req_joe.temp_drop_inv_item(active_item) // without this joe can't talk back
 	else
@@ -185,14 +182,7 @@
 /datum/tutorial/marine/ot_basic/proc/handle_phone_request(mob/speaking, message, datum/language/L)
 	SIGNAL_HANDLER
 
-	var/has_phone = FALSE
-	var/obj/active_item = tutorial_mob.get_active_hand()
-	var/obj/inactive_item = tutorial_mob.get_inactive_hand()
-	if (active_item != null && istype(active_item, /obj/item/phone))
-		has_phone = TRUE
-	if (inactive_item != null && istype(inactive_item, /obj/item/phone))
-		has_phone = TRUE
-
+	var/has_phone = player_has_phone_in_hand()
 	if (!softlock_explained)
 		if(has_phone && findtext(message, "pizza"))
 			message_to_player("Well done. Your mystery pizza should arrive shortly through the pneumatic delivery system.")
@@ -216,7 +206,8 @@
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/disposaloutlet/tutorial, softlock_vender)
 	add_highlight(softlock_vender)
 	req_joe.say("Let me help you.")
-	playsound(get_turf(tutorial_mob), 'sound/voice/joe/let_me_help.ogg', 100)
+	if (player_has_phone_in_hand())
+		playsound(get_turf(tutorial_mob), 'sound/voice/joe/let_me_help.ogg', 100)
 	addtimer(CALLBACK(src, PROC_REF(vend_item), item_path), 3 SECONDS)
 
 /datum/tutorial/marine/ot_basic/proc/vend_item(item_path)
@@ -224,3 +215,30 @@
 	softlock_vender.pipe_eject()
 	remove_highlight(softlock_vender)
 	new item_path(loc_from_corner(5, 2))
+
+// --- Logic Checks ---
+/datum/tutorial/marine/ot_basic/proc/player_has_phone_in_hand()
+	var/has_phone = FALSE
+	var/obj/active_item = tutorial_mob.get_active_hand()
+	var/obj/inactive_item = tutorial_mob.get_inactive_hand()
+	if (active_item != null && istype(active_item, /obj/item/phone))
+		has_phone = TRUE
+	if (inactive_item != null && istype(inactive_item, /obj/item/phone))
+		has_phone = TRUE
+	return has_phone
+
+/datum/tutorial/marine/ot_basic/proc/joe_has_phone_in_hand()
+	var/joe_has_phone = FALSE
+	var/obj/active_item = req_joe.get_active_hand()
+	if (active_item != null && istype(active_item, /obj/item/phone))
+		joe_has_phone = TRUE
+	return joe_has_phone
+
+// --- Joe Fun ---
+/datum/tutorial/marine/ot_basic/proc/joe_accept_handle()
+	var/random_num = rand(1, 10)
+	var/joe_has_phone = FALSE
+	var/obj/active_item = req_joe.get_active_hand()
+	if (active_item != null && istype(active_item, /obj/item/phone))
+		joe_has_phone = TRUE
+	return joe_has_phone
