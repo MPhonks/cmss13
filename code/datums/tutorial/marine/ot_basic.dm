@@ -2,6 +2,7 @@
 	name = "Marine - Ordnance Tech (Basic)"
 	desc = "Learn the basics of manufacture and maintenance of military-grade explosive devices."
 	tutorial_id = "marine_ot_1"
+	icon_state = "ordnancetech"
 	tutorial_template = /datum/map_template/tutorial/s15x10/ot
 	category = TUTORIAL_CATEGORY_MARINE
 	required_tutorial = "marine_basic_1"
@@ -36,6 +37,11 @@
 	// Autolathe stage
 	var/igniter_printed = FALSE
 	var/timer_printed = FALSE
+
+/datum/tutorial/marine/ot_basic/Destroy()
+	. = ..()
+	QDEL_NULL(req_joe)
+	// TODO: ...
 
 /datum/tutorial/marine/ot_basic/init_mob()
 	. = ..()
@@ -118,10 +124,10 @@
 	add_to_tracking_atoms(locate(/obj/structure/reagent_dispensers/tank/fuel/gas/methane/tutorial) in get_turf(loc_from_corner(1, 4)))
 	//oxygen
 	add_to_tracking_atoms(locate(/obj/structure/reagent_dispensers/tank/fuel/oxygentank/tutorial) in get_turf(loc_from_corner(0, 4)))
-	//custom_north
-	add_to_tracking_atoms(locate(/obj/structure/reagent_dispensers/tank/fuel/custom/tutorial) in get_turf(loc_from_corner(4, 7)))
-	//custom_south
+	//ethanol
 	add_to_tracking_atoms(locate(/obj/structure/reagent_dispensers/tank/ethanol/tutorial) in get_turf(loc_from_corner(4, 4)))
+	//custom
+	add_to_tracking_atoms(locate(/obj/structure/reagent_dispensers/tank/fuel/custom/tutorial) in get_turf(loc_from_corner(4, 7)))
 
 /datum/tutorial/marine/ot_basic/proc/init_npcs()
 	req_joe = new(loc_from_corner(-1, 0))
@@ -135,7 +141,7 @@
 
 	init_mob()
 	init_npcs()
-	message_to_player("Welcome to the basic tutorial of the Ordnance Technician role, where real explosive threats to colonial dissidents and extraterrestial liveforms are made and mantained.")
+	message_to_player("Welcome to the basic tutorial of the Ordnance Technician role, where real explosive threats to colonial dissidents and extraterrestial liveforms are made and maintained.")
 	addtimer(CALLBACK(src, PROC_REF(softlock_explanation)), 6 SECONDS)
 
 /datum/tutorial/marine/ot_basic/proc/softlock_explanation()
