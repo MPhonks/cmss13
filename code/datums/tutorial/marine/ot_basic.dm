@@ -120,8 +120,8 @@
 
 	init_mob()
 	init_npcs()
-	message_to_player("Welcome to the basic tutorial of the Ordnance Technician role, where the real threats are made and mantained.")
-	addtimer(CALLBACK(src, PROC_REF(softlock_explanation)), 4 SECONDS)
+	message_to_player("Welcome to the basic tutorial of the Ordnance Technician role, where the real threats to colonial dissidents and extraterrestial liveforms are made and mantained.")
+	addtimer(CALLBACK(src, PROC_REF(softlock_explanation)), 6 SECONDS)
 
 /datum/tutorial/marine/ot_basic/proc/softlock_explanation()
 	message_to_player("To begin, direct your attention at the phone to the right. Should you ever need something in the tutorial that no longer exists, you can \"order\" it from requisitions. Try ordering... pizza.")
@@ -175,12 +175,12 @@
 
 
 // --- Phone Stuff ---
-/datum/tutorial/marine/ot_basic/proc/handle_phone() // fix whatever this means
+/datum/tutorial/marine/ot_basic/proc/handle_phone() // somehow fix the attackby sleep issue
 	SIGNAL_HANDLER
 
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_workshop, ot_phone)
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_requisitions, req_phone)
-	if(ot_phone.icon_state != "wall_phone")
+	if(req_phone.inbound_call == null)
 		UnregisterSignal(tutorial_mob, COMSIG_LIVING_SPEAK)
 		var/joe_has_phone = FALSE
 		var/obj/active_item = req_joe.get_active_hand()
