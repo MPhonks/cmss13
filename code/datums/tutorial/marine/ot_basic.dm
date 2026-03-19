@@ -22,17 +22,21 @@
 
 	// Valid requisition requests
 	var/obj/pizza = /obj/item/pizzabox/mystery
-	var/obj/sacid = /obj/item/reagent_container/glass/beaker/sulphuric
-	var/obj/pacid = /obj/item/reagent_container/glass/canister/pacid
-	var/obj/oxygen = /obj/item/reagent_container/glass/canister/oxygen
-	var/obj/methane = /obj/item/reagent_container/glass/canister/methane
-	var/obj/ammonia = /obj/item/reagent_container/glass/canister/ammonia
-	var/obj/hydrogen = /obj/item/reagent_container/glass/canister
-	var/obj/ethanol = /obj/item/reagent_container/glass/beaker/ethanol
-	var/obj/metal = /obj/item/stack/sheet/metal/large_stack
-	var/obj/plasteel = /obj/item/stack/sheet/plasteel/large_stack
-	var/obj/plastic = /obj/item/stack/sheet/mineral/plastic
-	var/obj/glass = /obj/item/stack/sheet/glass/large_stack
+	var/list/request_map = list(
+		"sulphuric"  = /obj/item/reagent_container/glass/beaker/sulphuric,
+		"sulfuric"   = /obj/item/reagent_container/glass/beaker/sulphuric,
+		"polytrinic" = /obj/item/reagent_container/glass/canister/pacid,
+		"poly"       = /obj/item/reagent_container/glass/canister/pacid,
+		"oxygen"     = /obj/item/reagent_container/glass/canister/oxygen,
+		"methane"    = /obj/item/reagent_container/glass/canister/methane,
+		"ammonia"    = /obj/item/reagent_container/glass/canister/ammonia,
+		"hydrogen"   = /obj/item/reagent_container/glass/canister,
+		"ethanol"    = /obj/item/reagent_container/glass/beaker/ethanol,
+		"metal"      = /obj/item/stack/sheet/metal/large_stack,
+		"plasteel"   = /obj/item/stack/sheet/plasteel/large_stack,
+		"plastic"    = /obj/item/stack/sheet/mineral/plastic,
+		"glass"      = /obj/item/stack/sheet/glass/large_stack
+	)
 
 	// Autolathe stage
 	var/igniter_printed = FALSE
@@ -211,26 +215,9 @@
 			addtimer(CALLBACK(src, PROC_REF(requisitions_explanation)), 7 SECONDS)
 	else
 		var/list/requested_items = list()
-		if (findtext(message, "sulphuric") || findtext(message, "sulfuric"))
-			requested_items += sacid
-		if (findtext(message, "polytrinic") || findtext(message, "poly"))
-			requested_items += pacid
-		if (findtext(message, "oxygen"))
-			requested_items += oxygen
-		if (findtext(message, "methane"))
-			requested_items += methane
-		if (findtext(message, "ammonia"))
-			requested_items += ammonia
-		if (findtext(message, "hydrogen"))
-			requested_items += hydrogen
-		if (findtext(message, "metal"))
-			requested_items += metal
-		if (findtext(message, "plasteel"))
-			requested_items += plasteel
-		if (findtext(message, "plastic"))
-			requested_items += plastic
-		if (findtext(message, "glass"))
-			requested_items += glass
+		for(var/key in request_map)
+			if(findtext(message, key))
+				requested_items |= request_map[key]
 
 		if (requested_items.len > 0)
 			addtimer(CALLBACK(src, PROC_REF(joe_vend_requests), requested_items), 1 SECONDS)
@@ -243,7 +230,7 @@
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_requisitions, req_phone)
 	req_phone.attack_hand(req_joe)
 	if(player_has_phone_in_hand())
-		playsound(get_turf(tutorial_mob), 'sound/voice/joe/hello.ogg', 100)
+		playsound(tutorial_mob, 'sound/voice/joe/hello.ogg', 25)
 	req_joe.say("Hello.")
 
 /datum/tutorial/marine/ot_basic/proc/joe_vend_requests(list/requested_items)
@@ -290,7 +277,7 @@
 
 	var/special_voiceline = FALSE
 	for(var/item in requested_items)
-		if (istype(item, hydrogen))
+		if (istype(item, request_map["hydrogen"]))
 			special_voiceline = TRUE
 			joe_answer = "A potential hazard."
 			joe_sound = 'sound/voice/joe/potential_hazard.ogg'
@@ -302,4 +289,4 @@
 
 	req_joe.say(joe_answer)
 	if (player_has_phone_in_hand())
-		playsound(get_turf(tutorial_mob), joe_sound, 100)
+		playsound(tutorial_mob, joe_sound, 25)
