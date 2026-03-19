@@ -142,7 +142,7 @@
 /turf/open/floor/almayer/cargo,
 /area/misc/tutorial)
 "qV" = (
-/obj/structure/reagent_dispensers/tank/fuel/custom/tutorial/north,
+/obj/structure/reagent_dispensers/tank/fuel/custom/tutorial,
 /turf/open/floor/almayer/test_floor5,
 /area/misc/tutorial)
 "rh" = (
@@ -264,7 +264,7 @@
 /turf/open/floor/almayer/orange/east,
 /area/misc/tutorial)
 "CU" = (
-/obj/structure/reagent_dispensers/tank/fuel/custom/tutorial/south,
+/obj/structure/reagent_dispensers/tank/ethanol/tutorial,
 /turf/open/floor/almayer/test_floor5,
 /area/misc/tutorial)
 "DX" = (

@@ -8,16 +8,30 @@
 
 	// Did we explain the softlock yet?
 	var/softlock_explained = FALSE
-	// The invisible requisitions Joe answering the softlock calls
+	// The Requisitions Joe answering the softlock calls
 	var/mob/living/carbon/human/synthetic/req_joe
 	// How much patience does this Joe have?
 	var/patience = 3
 	// Calls without softlock help
 	var/useless_calls = 0
 	// Maximum successful calls (so that we don't keep spawning items in the tutorial)
-	var/maximum_calls = 25
-	// Amount of proper succesful made so far
+	var/maximum_calls = 10
+	// Amount of successful made so far
 	var/calls_made = 0
+
+	// Valid requisition requests
+	var/obj/pizza = /obj/item/pizzabox/mystery
+	var/obj/sacid = /obj/item/reagent_container/glass/beaker/sulphuric
+	var/obj/pacid = /obj/item/reagent_container/glass/canister/pacid
+	var/obj/oxygen = /obj/item/reagent_container/glass/canister/oxygen
+	var/obj/methane = /obj/item/reagent_container/glass/canister/methane
+	var/obj/ammonia = /obj/item/reagent_container/glass/canister/ammonia
+	var/obj/hydrogen = /obj/item/reagent_container/glass/canister
+	var/obj/ethanol = /obj/item/reagent_container/glass/beaker/ethanol
+	var/obj/metal = /obj/item/stack/sheet/metal/large_stack
+	var/obj/plasteel = /obj/item/stack/sheet/plasteel/large_stack
+	var/obj/plastic = /obj/item/stack/sheet/mineral/plastic
+	var/obj/glass = /obj/item/stack/sheet/glass/large_stack
 
 	// Autolathe stage
 	var/igniter_printed = FALSE
@@ -105,15 +119,14 @@
 	//oxygen
 	add_to_tracking_atoms(locate(/obj/structure/reagent_dispensers/tank/fuel/oxygentank/tutorial) in get_turf(loc_from_corner(0, 4)))
 	//custom_north
-	add_to_tracking_atoms(locate(/obj/structure/reagent_dispensers/tank/fuel/custom/tutorial/north) in get_turf(loc_from_corner(4, 7)))
+	add_to_tracking_atoms(locate(/obj/structure/reagent_dispensers/tank/fuel/custom/tutorial) in get_turf(loc_from_corner(4, 7)))
 	//custom_south
-	add_to_tracking_atoms(locate(/obj/structure/reagent_dispensers/tank/fuel/custom/tutorial/south) in get_turf(loc_from_corner(4, 4)))
+	add_to_tracking_atoms(locate(/obj/structure/reagent_dispensers/tank/ethanol/tutorial) in get_turf(loc_from_corner(4, 4)))
 
 /datum/tutorial/marine/ot_basic/proc/init_npcs()
 	req_joe = new(loc_from_corner(-1, 0))
 	arm_equipment(req_joe, /datum/equipment_preset/synth/working_joe)
-	req_joe.name = "Requisitions Joe"
-	req_joe.alpha = 0
+	req_joe.name = "Requisitions Joe #4021"
 
 /datum/tutorial/marine/ot_basic/start_tutorial(mob/starting_mob)
 	. = ..()
@@ -134,7 +147,7 @@
 	RegisterSignal(ot_phone, COMSIG_TRANSMITTER_UPDATE_ICON, PROC_REF(handle_phone))
 
 /datum/tutorial/marine/ot_basic/proc/requisitions_explanation()
-	message_to_player("Remember that the delivery system only exists in this tutorial. Whilst very helpful, there is no guarantee that requisitions will be able to provide you with what you want in a real match.")
+	message_to_player("Remember that the delivery system only exists in this tutorial. Whilst very helpful, there is no guarantee that requisitions will be able to provide you with what you want in an in-game round.")
 	addtimer(CALLBACK(src, PROC_REF(workshop_tutorial)), 6 SECONDS)
 
 /datum/tutorial/marine/ot_basic/proc/workshop_tutorial()
@@ -169,9 +182,7 @@
 	if(req_phone.inbound_call == null)
 		UnregisterSignal(tutorial_mob, COMSIG_LIVING_SPEAK)
 		if (joe_has_phone_in_hand())
-			var/obj/active_item = req_joe.get_active_hand()
-			active_item.forceMove(req_phone)
-			req_joe.temp_drop_inv_item(active_item) // without this joe can't talk back
+			req_phone.recall_phone()
 	else
 		addtimer(CALLBACK(src, PROC_REF(joe_pickup_phone)), 2 SECONDS)
 		addtimer(CALLBACK(src, PROC_REF(phone_talk_start)), 2 SECONDS)
@@ -189,8 +200,33 @@
 			TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_workshop, ot_phone)
 			remove_highlight(ot_phone)
 			softlock_explained = TRUE
-			addtimer(CALLBACK(src, PROC_REF(accept_vend_request), /obj/item/pizzabox/mystery), 1 SECONDS)
+			addtimer(CALLBACK(src, PROC_REF(joe_vend_requests), list(pizza)), 1 SECONDS)
 			addtimer(CALLBACK(src, PROC_REF(requisitions_explanation)), 7 SECONDS)
+	else
+		var/list/requested_items = list()
+		if (findtext(message, "sulphuric") || findtext(message, "sulfuric"))
+			requested_items += sacid
+		if (findtext(message, "polytrinic") || findtext(message, "poly"))
+			requested_items += pacid
+		if (findtext(message, "oxygen"))
+			requested_items += oxygen
+		if (findtext(message, "methane"))
+			requested_items += methane
+		if (findtext(message, "ammonia"))
+			requested_items += ammonia
+		if (findtext(message, "hydrogen"))
+			requested_items += hydrogen
+		if (findtext(message, "metal"))
+			requested_items += metal
+		if (findtext(message, "plasteel"))
+			requested_items += plasteel
+		if (findtext(message, "plastic"))
+			requested_items += plastic
+		if (findtext(message, "glass"))
+			requested_items += glass
+
+		if (requested_items.len > 0)
+			addtimer(CALLBACK(src, PROC_REF(joe_vend_requests), requested_items), 1 SECONDS)
 
 
 /datum/tutorial/marine/ot_basic/proc/joe_pickup_phone()
@@ -199,33 +235,38 @@
 		return
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_requisitions, req_phone)
 	req_phone.attack_hand(req_joe)
-	playsound(get_turf(tutorial_mob), 'sound/voice/joe/hello.ogg', 100)
+	if(player_has_phone_in_hand())
+		playsound(get_turf(tutorial_mob), 'sound/voice/joe/hello.ogg', 100)
 	req_joe.say("Hello.")
 
-/datum/tutorial/marine/ot_basic/proc/accept_vend_request(item_path)
-	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/disposaloutlet/tutorial, softlock_vender)
-	add_highlight(softlock_vender)
-	req_joe.say("Let me help you.")
-	if (player_has_phone_in_hand())
-		playsound(get_turf(tutorial_mob), 'sound/voice/joe/let_me_help.ogg', 100)
-	addtimer(CALLBACK(src, PROC_REF(vend_item), item_path), 3 SECONDS)
+/datum/tutorial/marine/ot_basic/proc/joe_vend_requests(list/requested_items)
+	joe_accept_answer(requested_items)
+	var/delay = 3 SECONDS
+	for (var/item_path in requested_items)
+		addtimer(CALLBACK(src, PROC_REF(vend_item), item_path), delay)
+		delay += 0.5 SECONDS
 
 /datum/tutorial/marine/ot_basic/proc/vend_item(item_path)
+	// simulates actual disposalsoutlet.eject() behavior
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/disposaloutlet/tutorial, softlock_vender)
-	softlock_vender.pipe_eject()
-	remove_highlight(softlock_vender)
-	new item_path(loc_from_corner(5, 2))
+	flick("[softlock_vender.icon_state]-open", softlock_vender)
+	playsound(softlock_vender, 'sound/machines/warning-buzzer.ogg', 25, 0)
+	sleep(20)
+	playsound(softlock_vender, 'sound/machines/hiss.ogg', 25, 0)
+	sleep(10)
+	var/obj/item = new item_path(loc_from_corner(5, 3))
+	item.throw_atom(loc_from_corner(5, 2), 3, SPEED_FAST)
 
 // --- Logic Checks ---
 /datum/tutorial/marine/ot_basic/proc/player_has_phone_in_hand()
-	var/has_phone = FALSE
+	var/player_has_phone = FALSE
 	var/obj/active_item = tutorial_mob.get_active_hand()
 	var/obj/inactive_item = tutorial_mob.get_inactive_hand()
 	if (active_item != null && istype(active_item, /obj/item/phone))
-		has_phone = TRUE
+		player_has_phone = TRUE
 	if (inactive_item != null && istype(inactive_item, /obj/item/phone))
-		has_phone = TRUE
-	return has_phone
+		player_has_phone = TRUE
+	return player_has_phone
 
 /datum/tutorial/marine/ot_basic/proc/joe_has_phone_in_hand()
 	var/joe_has_phone = FALSE
@@ -235,10 +276,23 @@
 	return joe_has_phone
 
 // --- Joe Fun ---
-/datum/tutorial/marine/ot_basic/proc/joe_accept_handle()
+/datum/tutorial/marine/ot_basic/proc/joe_accept_answer(list/requested_items)
 	var/random_num = rand(1, 10)
-	var/joe_has_phone = FALSE
-	var/obj/active_item = req_joe.get_active_hand()
-	if (active_item != null && istype(active_item, /obj/item/phone))
-		joe_has_phone = TRUE
-	return joe_has_phone
+	var/joe_answer = ""
+	var/joe_sound = null
+
+	var/special_voiceline = FALSE
+	for(var/item in requested_items)
+		if (istype(item, hydrogen))
+			special_voiceline = TRUE
+			joe_answer = "A potential hazard."
+			joe_sound = 'sound/voice/joe/potential_hazard.ogg'
+			break
+
+	if (!special_voiceline)
+		joe_answer = "Let me help you."
+		joe_sound = 'sound/voice/joe/let_me_help.ogg'
+
+	req_joe.say(joe_answer)
+	if (player_has_phone_in_hand())
+		playsound(get_turf(tutorial_mob), joe_sound, 100)

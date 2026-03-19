@@ -222,7 +222,7 @@ GLOBAL_LIST_INIT(cm_vending_clothing_medic_sandbox, list(
 
 /obj/structure/transmitter/tutorial/ot_requisitions
 	name = "Requisitions Telephone"
-	desc = "You shouldn't be able to see this... Whoopsie-daisy."
+	desc = "The Requisitions Joe works day and night, relentless in its pursuit of taking the calls of many tutorial players."
 	phone_id = "OT Tutorial - Requisitions"
 	networks_receive = list("OT_TUTORIAL")
 	networks_transmit = list("OT_TUTORIAL")
@@ -231,7 +231,6 @@ GLOBAL_LIST_INIT(cm_vending_clothing_medic_sandbox, list(
 	pixel_x = 14
 	call_sound = null
 	pickup_sound = null
-	alpha = 0
 
 /obj/structure/machinery/autolathe/tutorial
 
@@ -288,9 +287,9 @@ GLOBAL_LIST_INIT(cm_vending_clothing_medic_sandbox, list(
 
 /obj/structure/reagent_dispensers/tank/fuel/oxygentank/tutorial
 
-/obj/structure/reagent_dispensers/tank/fuel/custom/tutorial/north
+/obj/structure/reagent_dispensers/tank/ethanol/tutorial
 
-/obj/structure/reagent_dispensers/tank/fuel/custom/tutorial/south
+/obj/structure/reagent_dispensers/tank/fuel/custom/tutorial
 
 // Items
 
