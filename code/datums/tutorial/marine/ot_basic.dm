@@ -175,10 +175,9 @@
 
 
 // --- Phone Stuff ---
-/datum/tutorial/marine/ot_basic/proc/handle_phone() // somehow fix the attackby sleep issue
+/datum/tutorial/marine/ot_basic/proc/handle_phone()
 	SIGNAL_HANDLER
 
-	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_workshop, ot_phone)
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/transmitter/tutorial/ot_requisitions, req_phone)
 	if(req_phone.inbound_call == null)
 		UnregisterSignal(tutorial_mob, COMSIG_LIVING_SPEAK)
@@ -187,7 +186,8 @@
 		if (active_item != null && istype(active_item, /obj/item/phone))
 			joe_has_phone = TRUE
 		if (joe_has_phone)
-			req_phone.attackby(active_item, req_joe)
+			active_item.forceMove(req_phone)
+			req_joe.temp_drop_inv_item(active_item) // without this joe can't talk back
 	else
 		addtimer(CALLBACK(src, PROC_REF(joe_pickup_phone)), 2 SECONDS)
 		addtimer(CALLBACK(src, PROC_REF(phone_talk_start)), 2 SECONDS)
