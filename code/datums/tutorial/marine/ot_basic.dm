@@ -1,3 +1,6 @@
+// Special counter (for phone network allocation)
+var/static/ot_tutorial_counter = 0
+
 /datum/tutorial/marine/ot_basic
 	name = "Marine - Ordnance Tech (Basic)"
 	desc = "Learn the basics of manufacture and maintenance of military-grade explosive devices."
@@ -6,6 +9,7 @@
 	tutorial_template = /datum/map_template/tutorial/s15x10/ot
 	category = TUTORIAL_CATEGORY_MARINE
 	required_tutorial = "marine_basic_1"
+	var/ot_tutorial_id // Taken from the ot_tutorial_counter at tutorial_start()
 
 	// Did we explain the softlock yet?
 	var/softlock_explained = FALSE
@@ -48,6 +52,9 @@
 	. = ..()
 	QDEL_NULL(req_joe)
 	// TODO: ...
+
+/datum/tutorial/marine/ot_basic/proc/init_meta()
+	ot_tutorial_id = ot_tutorial_counter
 
 /datum/tutorial/marine/ot_basic/init_mob()
 	. = ..()
@@ -145,6 +152,7 @@
 	if(!.)
 		return
 
+	init_meta()
 	init_mob()
 	init_npcs()
 	message_to_player("Welcome to the basic tutorial of the Ordnance Technician role, where real explosive threats to colonial dissidents and extraterrestial liveforms are made and maintained.")
@@ -160,22 +168,24 @@
 
 /datum/tutorial/marine/ot_basic/proc/requisitions_explanation()
 	message_to_player("Remember that the delivery system only exists in this tutorial. Whilst very helpful, there is no guarantee that requisitions will be able to provide you with what you want in an in-game round.")
+	update_objective("Yummers, pizza.")
 	addtimer(CALLBACK(src, PROC_REF(workshop_tutorial)), 6 SECONDS)
 
+// --- Assembly Tutorial ---
 /datum/tutorial/marine/ot_basic/proc/workshop_tutorial()
 	message_to_player("Where you currently are is a smaller version of your actual workshop. Outside of the tutorial, you can find it south of medbay, on the first floor of the USS Almayer.")
-	addtimer(CALLBACK(src, PROC_REF(vendor_tutorial)), 6 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(assembly_tutorial)), 6 SECONDS)
 
-/datum/tutorial/marine/ot_basic/proc/vendor_tutorial()
-	message_to_player("When you're ready, start the tutorial by creating an <span class='bold'>\"assembly\"</span>. Find the autolathe, vend an igniter, and a timer.")
+/datum/tutorial/marine/ot_basic/proc/assembly_tutorial()
+	message_to_player("When you're ready, start the tutorial by creating an <span class='bold'>\"assembly\"</span>. Find the autolathe and use it to vend one 'igniter', and one 'timer'.")
+	update_objective("Find the autolathe and use it to vend one 'igniter', and one 'timer'.")
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/autolathe/tutorial, autolathe)
 	add_highlight(autolathe)
-	RegisterSignal(autolathe, COMSIG_AUTOLATHE_PRINTED, PROC_REF(vendor_check_printed))
+	RegisterSignal(autolathe, COMSIG_AUTOLATHE_PRINTED, PROC_REF(assembly_check_printed))
 
-/datum/tutorial/marine/ot_basic/proc/vendor_check_printed(autolathe_datum, made_item)
+/datum/tutorial/marine/ot_basic/proc/assembly_check_printed(autolathe_datum, made_item)
 	SIGNAL_HANDLER
 
-	message_to_player(made_item)
 	if(istype(made_item, /obj/item/device/assembly/igniter))
 		igniter_printed = TRUE
 	if(istype(made_item, /obj/item/device/assembly/timer))
@@ -184,7 +194,16 @@
 		TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/autolathe/tutorial, autolathe)
 		remove_highlight(autolathe)
 		UnregisterSignal(autolathe, COMSIG_AUTOLATHE_PRINTED)
+		message_to_player("Well done, you have printed one possible combination of devices needed for an assembly. Assemblies are a combination of any two devices, sharing both of their functions. All explosive devices require an igniter, whilst the other part is up to you.")
+		addtimer(CALLBACK(src, PROC_REF(assembly_tutorial_part_two)), 6 SECONDS)
 
+/datum/tutorial/marine/ot_basic/proc/assembly_tutorial_part_two()
+	message_to_player("Create an igniter-timer assembly now by combining both devices together. Secure it by using a screwdriver.")
+	if (igniter_printed && timer_printed)
+		TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/autolathe/tutorial, autolathe)
+		remove_highlight(autolathe)
+		UnregisterSignal(autolathe, COMSIG_AUTOLATHE_PRINTED)
+		addtimer(CALLBACK(src, PROC_REF(assembly_tutorial_part_two)), 6 SECONDS)
 
 // --- Phone Stuff ---
 /datum/tutorial/marine/ot_basic/proc/handle_phone()
