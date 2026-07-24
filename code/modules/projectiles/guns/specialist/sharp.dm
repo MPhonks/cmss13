@@ -216,6 +216,7 @@
 	if(ismob(target))
 		var/explosion_strength = 60
 		var/explosion_falloff = 20
+		var/explosion_falloff_shape = EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL
 		var/cause_data = create_cause_data("P9 SHARP Rifle", shooter)
 
 		switch(mine_mode)
@@ -223,14 +224,16 @@
 				explosion_strength = 90
 				explosion_falloff = explosion_strength
 			if(SHARP_SAFE_MODE)
-				for(var/mob/living/carbon/human in range((explosion_strength / explosion_falloff) - 1, target))
+				for(var/mob/living/carbon/human in range(1, target))
 					if (human.get_target_lock(shooter.faction_group))
 						playsound(target, 'sound/weapons/smartgun_fail.ogg', target, 25)
 						to_chat(target, SPAN_WARNING("[shot_dart] releases itself from you!"))
 						target.balloon_alert(target, "an attached explosive dart releases itself from you!")
 						to_chat(shooter, SPAN_WARNING("[shot_dart] recognized an IFF marked target and did not detonate!"))
 						return
-		cell_explosion(get_turf(target), explosion_strength, explosion_falloff, EXPLOSION_FALLOFF_SHAPE_LINEAR, CARDINAL_ALL_DIRS, cause_data)
+			if(SHARP_DANGER_MODE)
+				explosion_falloff_shape = EXPLOSION_FALLOFF_SHAPE_LINEAR
+		cell_explosion(get_turf(target), explosion_strength, explosion_falloff, explosion_falloff_shape, CARDINAL_ALL_DIRS, cause_data)
 
 
 /datum/ammo/rifle/sharp/incendiary

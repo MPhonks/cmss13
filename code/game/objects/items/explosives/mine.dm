@@ -401,10 +401,13 @@
 	var/disarmed = FALSE
 	var/explosion_strength = 100
 	var/explosion_falloff = 30
+	var/explosion_falloff_shape = EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL
+
 	var/mine_level = 1
 	var/deploy_time = 0
 	var/mine_state = ""
 	var/mine_mode = ""
+
 	var/setup_timer // initialized in sharp.dm drop_dart
 	var/upgrade_timer // used here
 	var/disarm_timer // initialized in sharp.dm drop_dart
@@ -501,7 +504,9 @@
 				if (human.get_target_lock(iff_signal))
 					disarm()
 					return
-	cell_explosion(loc, explosion_strength, explosion_falloff, EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL, CARDINAL_ALL_DIRS, cause_data, enviro=map_deployed)
+		if(SHARP_DANGER_MODE)
+			explosion_falloff_shape = EXPLOSION_FALLOFF_SHAPE_LINEAR
+	cell_explosion(loc, explosion_strength, explosion_falloff, explosion_falloff_shape, CARDINAL_ALL_DIRS, cause_data, enviro=map_deployed)
 	playsound(loc, 'sound/weapons/gun_sharp_explode.ogg', 100)
 	qdel(src)
 
